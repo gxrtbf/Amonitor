@@ -1,0 +1,6 @@
+pysql.py
+
+*.pyc
+*.json
+
+static/data/*
