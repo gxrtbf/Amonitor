@@ -4,3 +4,4 @@ pysql.py
 *.json
 
 static/data/*
+*.log
