@@ -35,7 +35,7 @@ def timeScale(startTime = "2017-03-01"):
 #贷款金额情况
 def loan():
 	timeList = timeScale()
-	sql = 'select distinct createDate from FlowLoanMoney'
+	sql = 'select distinct createDate from dayAddApi_FlowLoanMoney'
 	tmRest = pysql.dbInfoLocal(sql)
 	tmRest = tmRest.fillna(0)
 
@@ -62,19 +62,17 @@ def loan():
 		data = data.fillna(0)
 		product = config.product
 		for key in product.keys():
-		    tp = data[data['productId']==int(key)]
-		    if not tp.empty:
-		    	money = int(sum(tp['repayMoney']))
-		    else:
-		    	money = 0
-		        
-			sql = """ insert into FlowLoanMoney(product,money,createDate) values (%s,%s,%s) """
+			tp = data[data['productId']==int(key)]
+			if not tp.empty:
+				money = int(sum(tp['repayMoney']))
+			else:
+				money = 0
+			sql = """ insert into dayAddApi_FlowLoanMoney(product,money,createDate) values (%s,%s,%s) """
 			dset = [(product[key],money,stTime)]
 			status = pysql.insertData(sql,dset)
 		log.log('每日借贷金额更新状态-{}! ({})'.format(status,stTime),'info')
-
 		allLoan = int(sum(data['repayMoney']))
-		sql = """ insert into FlowLoanMoney(product,money,createDate) values (%s,%s,%s) """
+		sql = """ insert into dayAddApi_FlowLoanMoney(product,money,createDate) values (%s,%s,%s) """
 		dset = [('All',allLoan,stTime)]
 		status = pysql.insertData(sql,dset)
 		log.log('每日借贷金额更新状态-{}! ({})'.format(status,stTime),'info')
@@ -97,14 +95,14 @@ def loan():
 		    money = int(sum(tp['repayMoney']))
 		else:
 		    money = 0
-		sql = """ insert into FlowLoanMoneySum(product,money,createDate) values (%s,%s,%s) """
-		dset = [(proname,money,str(datetime.datetime.today()))]
+		sql = """ insert into dayAddApi_FlowLoanMoneySum(product,money,createDate) values (%s,%s,%s) """
+		dset = [(proname,money,str(datetime.datetime.today())[:10])]
 		status = pysql.insertData(sql,dset)
 	log.log('借贷总金额更新状态-{}！({})！'.format(status,stTime),'info')
 
 def loanNO():
 	timeList = timeScale()
-	sql = 'select distinct createDate from FlowLoanMoneyNO'
+	sql = 'select distinct createDate from dayAddApi_FlowLoanMoneyNO'
 	tmRest = pysql.dbInfoLocal(sql)
 	tmRest = tmRest.fillna(0)
 
@@ -145,7 +143,7 @@ def loanNO():
 		loanNew = data.values[0][0]
 
 		#插入数据
-		sql = """ insert into FlowLoanMoneyNO(loanOld,loanNew,createDate) values (%s,%s,%s) """
+		sql = """ insert into dayAddApi_FlowLoanMoneyNO(loanOld,loanNew,createDate) values (%s,%s,%s) """
 		dset = [(loanOld,loanNew,stTime)]
 		status = pysql.insertData(sql,dset)
 		log.log('借贷金额(新老)更新状态-{}！({})！'.format(status,stTime),'info')
@@ -154,7 +152,7 @@ def loanNO():
 def actRepayment():
 
 	timeList = timeScale()
-	sql = 'select distinct createDate from IndexAcRepay'
+	sql = 'select distinct createDate from dayAddApi_IndexAcRepay'
 	tmRest = pysql.dbInfoLocal(sql)
 	tmRest = tmRest.fillna(0)
 
@@ -189,7 +187,7 @@ def actRepayment():
 
 		repayRate = int(acRepayMoney/float(allRepayMoney)*100)
 
-		sql = """ insert into IndexAcRepay(allRepayMoney,acRepayMoney,repayRate,createDate) values (%s,%s,%s,%s) """
+		sql = """ insert into dayAddApi_IndexAcRepay(allRepayMoney,acRepayMoney,repayRate,createDate) values (%s,%s,%s,%s) """
 		dset = [(allRepayMoney,acRepayMoney,repayRate,stTime)]
 		status = pysql.insertData(sql,dset)
 

@@ -88,11 +88,11 @@ def check():
 	day90Ratem = list(data['day90Ratem'])
 	updateDate = [str(datetime.datetime.today())[:10]] * len(month)
 
-	sql = "delete from CollectRate"
+	sql = "delete from dayAddApi_CollectRate"
 	status = pysql.deletetData(sql)
 	log.log(u'催回率数据删除状态-{}!({})'.format(status,str(datetime.date.today())),'info')
 
-	sql = """ insert into CollectRate(month,day4Rate,day7Rate,day15Rate,day30Rate,day60Rate,day90Rate,day90Ratem,updateDate) values (%s,%s,%s,%s,%s,%s,%s,%s,%s) """
+	sql = """ insert into dayAddApi_CollectRate(month,day4Rate,day7Rate,day15Rate,day30Rate,day60Rate,day90Rate,day90Ratem,createDate) values (%s,%s,%s,%s,%s,%s,%s,%s,%s) """
 	dset = zip(month,day4Rate,day7Rate,day15Rate,day30Rate,day60Rate,day90Rate,day90Ratem,updateDate)
 	status = pysql.insertData(sql,dset)
 	log.log('催回率数据更新状态-{}！({})！'.format(status,str(datetime.date.today())),'info')
@@ -103,7 +103,7 @@ def collectDisYesterday():
 
 	#每日数据 当前逾期天数的分布
 	timeList = timeScale()
-	sql = 'select distinct createDate from CollectDis'
+	sql = 'select distinct createDate from dayAddApi_CollectDis'
 	tmRest = pysql.dbInfoLocal(sql)
 	tmRest = tmRest.fillna(0)
 
@@ -118,7 +118,7 @@ def collectDisYesterday():
 		if stTime in tmwait:
 			continue
 
-		print stTime
+		print '案件数量' + stTime
 		curDisct = {}
 
 		#待催收的案件数(未完成的催回+在规定时间外催回的)
@@ -163,7 +163,7 @@ def collectDisYesterday():
 		for i in range(len(df)):
 			curDisct[df.index[i]] = df.values[i]
 
-		sql = """ insert into CollectDis(dayto3,dayto10,dayto20,dayto30,dayto60,dayto90,dayover90,currentNum,createDate) values (%s,%s,%s,%s,%s,%s,%s,%s,%s) """
+		sql = """ insert into dayAddApi_CollectDis(dayto3,dayto10,dayto20,dayto30,dayto60,dayto90,dayover90,currentNum,createDate) values (%s,%s,%s,%s,%s,%s,%s,%s,%s) """
 		dset = [(curDisct['1-3'],curDisct['4-10'],curDisct['11-20'],curDisct['21-30'],curDisct['31-60'],curDisct['61-90'],curDisct['90-'],curDisct['currentNum'],stTime)]
 		status = pysql.insertData(sql,dset)
 		log.log('每日案件逾期天数更新状态-{}! ({})'.format(status,stTime),'info')
@@ -171,7 +171,7 @@ def collectDisYesterday():
 def collectNumYesterday():
 	#每日数据 
 	timeList = timeScale()
-	sql = 'select distinct createDate from CollectNum'
+	sql = 'select distinct createDate from dayAddApi_CollectNum'
 	tmRest = pysql.dbInfoLocal(sql)
 	tmRest = tmRest.fillna(0)
 
@@ -238,14 +238,14 @@ def collectNumYesterday():
 		else:
 			NewPaidRate = 0
 
-		sql = """ insert into CollectNum(newAdd,newCollectMl1,newCollectMu1,threeDayCollect,threeDayCollectRate,createDate) values (%s,%s,%s,%s,%s,%s) """
+		sql = """ insert into dayAddApi_CollectNum(newAdd,newCollectMl1,newCollectMu1,threeDayCollect,threeDayCollectRate,createDate) values (%s,%s,%s,%s,%s,%s) """
 		dset = [(yesterdayNew,yesterdayPaidl30,yesterdayPaidu30,threeDayPaing,NewPaidRate,stTime)]
 		status = pysql.insertData(sql,dset)
 		log.log('催回基本数据更新状态-{}! ({})'.format(status,stTime),'info')
 
 def main():
-	#check()
-	#collectDisYesterday()
+	check()
+	collectDisYesterday()
 	collectNumYesterday()
 
 if __name__ == '__main__':

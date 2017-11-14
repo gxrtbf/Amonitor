@@ -86,11 +86,11 @@ def delayDayFund():
 		stt = list(pt['times'])
 		fnanme = [fundName] * len(pt)
 
-		sql = "delete from FlowDelayRate where fundName='" + fundName + "'"
+		sql = "delete from dayAddApi_FlowDelayRate where fundName='" + fundName + "'"
 		status = pysql.deletetData(sql)
 		log.log(u'逾期数据删除状态-{}！(资金方{})'.format(status,fundName),'info')
 
-		sql = """ insert into FlowDelayRate(fundName,delayRate0,delayRate3,delayRate7,delayRate10,delayRate20,delayRateM1,delayRateM2,delayRateM3,createDate) values (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s) """
+		sql = """ insert into dayAddApi_FlowDelayRate(fundName,delayRate0,delayRate3,delayRate7,delayRate10,delayRate20,delayRateM1,delayRateM2,delayRateM3,createDate) values (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s) """
 		dset = zip(fnanme,s0,s3,s7,s10,s20,sM1,sM2,sM3,stt)
 		status = pysql.insertData(sql,dset)
 		log.log(u'逾期数据更新状态-{}！(资金方{})'.format(status,fundName),'info')
@@ -102,7 +102,7 @@ def delayDayNOFund():
 		ids = fundId[fundName][0]
 
 		timeList = timeScale('2017-08-30')[:-3]
-		sql = 'select distinct createDate from FlowDelayRateNO'
+		sql = "select distinct createDate from dayAddApi_FlowDelayRateNO where fundName='" + fundName + "'";
 		tmRest = pysql.dbInfoLocal(sql)
 		tmRest = tmRest.fillna(0)
 
@@ -141,7 +141,7 @@ def delayDayNOFund():
 				and b.termDate >= '{}' and b.termDate < '{}' 
 				and if(b.repaidTime is NULL,TO_DAYS(now()) - TO_DAYS(b.termDate),TO_DAYS(b.repaidTime) - TO_DAYS(b.termDate)) <= 3
 				and a.userSid not in (
-	  				select distinct userSid from loan_repaying where termDate < '{}'
+				select distinct userSid from loan_repaying where termDate < '{}'
 				)
 				and a.fundPayAccountId in ({})
 			""".format(stTime,edTime,stTime,ids)
@@ -156,7 +156,7 @@ def delayDayNOFund():
 				where a.id=b.loanId and a.status=6 and b.compatibleStatus not in ('UNPAID','CANCEL') and b.productId not in (3,4,5,6,1001)
 				and b.termDate >= '{}' and b.termDate < '{}' 
 				and a.userSid in (
-	  				select distinct userSid from loan_repaying where termDate < '{}'
+				select distinct userSid from loan_repaying where termDate < '{}'
 				)
 				and a.fundPayAccountId in ({})
 			""".format(stTime,edTime,stTime,ids)
@@ -171,7 +171,7 @@ def delayDayNOFund():
 				and b.termDate >= '{}' and b.termDate < '{}' 
 				and if(b.repaidTime is NULL,TO_DAYS(now()) - TO_DAYS(b.termDate),TO_DAYS(b.repaidTime) - TO_DAYS(b.termDate)) <= 3
 				and a.userSid in (
-	  				select distinct userSid from loan_repaying where termDate < '{}'
+				select distinct userSid from loan_repaying where termDate < '{}'
 				)
 				and a.fundPayAccountId in ({})
 			""".format(stTime,edTime,stTime,ids)
@@ -180,7 +180,7 @@ def delayDayNOFund():
 			oldPaid = data.values[0][0]
 			oldDelayRate = round((oldPaySum - oldPaid)/oldRepaySum*100,2)
 
-			sql = """ insert into FlowDelayRateNO(fundName,newPaySum,newRepaySum,newPaid,newDelayRate3,oldPaySum,oldRepaySum,oldPaid,oldDelayRate3,createDate) values (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s) """
+			sql = """ insert into dayAddApi_FlowDelayRateNO(fundName,newPaySum,newRepaySum,newPaid,newDelayRate3,oldPaySum,oldRepaySum,oldPaid,oldDelayRate3,createDate) values (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s) """
 			dset = [(fundName,newPaySum,newRepaySum,newPaid,newDelayRate,oldPaySum,oldRepaySum,oldPaid,oldDelayRate,stTime)]
 			status = pysql.insertData(sql,dset)
 			log.log(u'逾期3天(新老)数据更新状态-{}！({})(资金方{})！'.format(status,stTime,fundName),'info')

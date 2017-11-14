@@ -52,15 +52,15 @@ def userSex():
 	data = data.fillna(0)
 	female = data.values[0][0]
 
-	sql = """ insert into UserSexAll(male,female,createDate) values (%s,%s,%s) """
-	dset = [(male,female,str(datetime.datetime.today()))]
+	sql = """ insert into dayAddApi_UserSexAll(male,female,createDate) values (%s,%s,%s) """
+	dset = [(male,female,str(datetime.datetime.now())[:10])]
 	status = pysql.insertData(sql,dset)
 
 	log.log('用户性别（总）更新状态-{}！'.format(status),'info')
 
  	#日增数据
 	timeList = timeScale()
-	sql = 'select distinct createDate from UserSex'
+	sql = 'select distinct createDate from dayAddApi_UserSex'
 	tmRest = pysql.dbInfoLocal(sql)
 	tmRest = tmRest.fillna(0)
 
@@ -75,6 +75,7 @@ def userSex():
 		if stTime in tmwait:
 			continue
 
+		print '性别' + stTime
 		sql = """
 			select count(*) from user where date_created > '{}' and date_created < '{}' and sex = '1'
 		""" .format(stTime,edTime)
@@ -89,7 +90,7 @@ def userSex():
 		data = data.fillna(0)
 		female = data.values[0][0]
 
-		sql = """ insert into UserSex(male,female,createDate) values (%s,%s,%s) """
+		sql = """ insert into dayAddApi_UserSex(male,female,createDate) values (%s,%s,%s) """
 		dset = [(male,female,stTime)]
 		status = pysql.insertData(sql,dset)
 		log.log('用户性别（日）更新状态-{}！({})'.format(status,stTime),'info')
@@ -106,14 +107,14 @@ def userAge():
 	data = pd.pivot_table(data,index=["age"],values=["num"],aggfunc='sum')
 	data['age'] = data.index
 
-	sql = """ insert into UserAgeAll(age1,age2,age3,age4,age5,createDate) values (%s,%s,%s,%s,%s,%s) """
-	dset = [(data['num'][0],data['num'][1],data['num'][2],data['num'][3],data['num'][4],str(datetime.datetime.today()))]
+	sql = """ insert into dayAddApi_UserAgeAll(age1,age2,age3,age4,age5,createDate) values (%s,%s,%s,%s,%s,%s) """
+	dset = [(data['num'][0],data['num'][1],data['num'][2],data['num'][3],data['num'][4],str(datetime.datetime.now())[:10])]
 	status = pysql.insertData(sql,dset)
 	log.log('用户年龄（总）更新状态-{}！'.format(status),'info')
 
 
 	timeList = timeScale()
-	sql = 'select distinct createDate from UserAge'
+	sql = 'select distinct createDate from dayAddApi_UserAge'
 	tmRest = pysql.dbInfoLocal(sql)
 	tmRest = tmRest.fillna(0)
 
@@ -127,7 +128,7 @@ def userAge():
 
 		if stTime in tmwait:
 			continue
-
+		print '年龄' + stTime
 		sql = """
 			select age,count(age) 'num' from user where age <> 0 and date_created > '{}' and date_created < '{}' group by age;
 		""".format(stTime,edTime)
@@ -137,7 +138,7 @@ def userAge():
 		data = pd.pivot_table(data,index=["age"],values=["num"],aggfunc='sum')
 		data['age'] = data.index
 
-		sql = """ insert into UserAge(age1,age2,age3,age4,age5,createDate) values (%s,%s,%s,%s,%s,%s) """
+		sql = """ insert into dayAddApi_UserAge(age1,age2,age3,age4,age5,createDate) values (%s,%s,%s,%s,%s,%s) """
 		dset = [(data['num'][0],data['num'][1],data['num'][2],data['num'][3],data['num'][4],stTime)]
 		status = pysql.insertData(sql,dset)
 		log.log('用户年龄（日）更新状态-{}！({})'.format(status,stTime),'info')

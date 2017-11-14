@@ -47,8 +47,8 @@ def hopperHead():
 	reloanNum = data.values[0][0]
 
 	#数据插入
-	sql = """ insert into IndexHopper(register,apply,pass,loan,reloan,createDate) values (%s,%s,%s,%s,%s,%s) """
-	dset = [(registerNum,applyNum,passNum,loanNum,reloanNum,str(datetime.datetime.today()))]
+	sql = """ insert into dayAddApi_IndexHopper(register,applys,passs,loan,reloan,createDate) values (%s,%s,%s,%s,%s,%s) """
+	dset = [(registerNum,applyNum,passNum,loanNum,reloanNum,str(datetime.datetime.now())[:10])]
 	status = pysql.insertData(sql,dset)
 	log.log('漏斗数据更新状态-{}'.format(status),'info')
 
@@ -66,8 +66,8 @@ def hopperHead():
 	tradeMoney = int(data.values[0][0])
 
 	#数据插入
-	sql = """ insert into IndexHead(sumUser,activeUser,tradeNum,tradeMoney,createDate) values (%s,%s,%s,%s,%s) """
-	dset = [(sumUser,activeUser,tradeNum,tradeMoney,str(datetime.datetime.today()))]
+	sql = """ insert into dayAddApi_IndexHead(sumUser,activeUser,tradeNum,tradeMoney,createDate) values (%s,%s,%s,%s,%s) """
+	dset = [(sumUser,activeUser,tradeNum,tradeMoney,str(datetime.datetime.now())[:10])]
 	status = pysql.insertData(sql,dset)
 	log.log('首页标题数据更新状态-{}！'.format(status),'info')
 
@@ -126,7 +126,7 @@ def userPlace():
 		cityNum.append(item['人数'])
 	ctime = [str(datetime.datetime.now())[:10]]*len(cityName)
 
-	sql = """ insert into IndexCity(cityName,numInCity,createDate) values (%s,%s,%s) """
+	sql = """ insert into dayAddApi_IndexCity(cityName,numInCity,createDate) values (%s,%s,%s) """
 	dset = zip(cityName,cityNum,ctime)
 	status = pysql.insertData(sql,dset)
 
@@ -182,8 +182,8 @@ def dashbook():
 	data = pysql.dbInfo(sql)
 	avgServiceMoney = round(data.values[0][0],2)
 
-	sql = """ insert into IndexDash(avgTermNum,avgMoney,avgServiceMoney,createDate) values (%s,%s,%s,%s) """
-	dset = [(avgTermNum,avgMoney,avgServiceMoney,str(datetime.datetime.today()))]
+	sql = """ insert into dayAddApi_IndexDash(avgTermNum,avgMoney,avgServiceMoney,createDate) values (%s,%s,%s,%s) """
+	dset = [(avgTermNum,avgMoney,avgServiceMoney,str(datetime.datetime.now())[:10])]
 	status = pysql.insertData(sql,dset)
 
 	log.log('仪表盘数据更新状态-{}！'.format(status),'info')
