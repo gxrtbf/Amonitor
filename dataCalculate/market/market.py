@@ -68,22 +68,21 @@ def passRateloan():
 			data = data.fillna(0)
 			paidNum = data.values[0][0]
 
-			#当前提现成功率
 			sql = """
-				select datPass from dayAddApi_marketNum
+				select applyPass from dayAddApi_marketNum
 				where createDate >= '{}' and createDate < '{}' 
-			""".format(stTime,edTime)
-			data = pysql.dbInfo(sql)
+			""".format(stTime,edTime1)
+			data = pysql.dbInfoLocal(sql)
 			data = data.fillna(0)
 			applyPass = data.values[0][0]
 			#当前 申请提现成功率
-			paidRate = round(paidNum/float(applyPass*100,2)) if paidNum > 2 else 0
+			paidRate = round(paidNum/float(applyPass*100),2) if paidNum > 2 else 0
 			#存储数据
 			sql = """ 
 				update dayAddApi_marketNum 
-	   			set nowSucMoneyRate = {} 
+	   			set paidRate = {} ,paidNum = {}
 	 			where createDate >= '{}' and createDate < '{}' 
-			""".format(paidRate,stTime,edTime1)
+			""".format(paidRate,paidNum,stTime,edTime1)
 			status = pysql.updateData(sql)
 			log.log('当前申请提现成功率更新状态-{}! ({})'.format(status,stTime),'info')
 			continue

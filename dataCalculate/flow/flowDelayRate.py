@@ -189,10 +189,6 @@ def main():
 	delayDayFund()
 	delayDayNOFund()
 	
-def strtotime(strtime):
-    if type(strtime) in [pd.tslib.NaTType]:
-        strtime = datetime.datetime.now()
-    return strtime
  
 if __name__ == '__main__':
 	main()
