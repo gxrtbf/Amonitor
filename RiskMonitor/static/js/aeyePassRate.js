@@ -16,7 +16,7 @@ $(document).ready(function(){
         }
         var option = {
             title : {
-                text: '每日审核情况',
+                text: '每日申请审核情况',
             },
             tooltip: {
                 trigger: 'axis',
@@ -36,7 +36,7 @@ $(document).ready(function(){
                 }
             },
             legend: {
-                data:['审核量','通过量','通过率']
+                data:['申请量','通过量','通过率']
             },
             xAxis: [
                 {
@@ -113,7 +113,7 @@ $(document).ready(function(){
             ],
             series: [
                 {
-                    name:'审核量',
+                    name:'申请量',
                     type:'line',
                     data:dayCheck,
                     itemStyle:{  

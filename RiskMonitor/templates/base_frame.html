@@ -11,16 +11,9 @@
 
     <title> AMonitor </title>
 
-    <!-- Bootstrap Core CSS -->
     <link href="../static/css/bootstrap.min.css" rel="stylesheet">
-
-    <!-- MetisMenu CSS -->
     <link href="../static/css/metisMenu.min.css" rel="stylesheet">
-
-    <!-- Custom CSS -->
     <link href="../static/css/admin.css" rel="stylesheet">
-
-    <!-- Custom Fonts -->
     <link href="../static/css/font-awesome.min.css" rel="stylesheet" type="text/css">
 
     <link rel="shortcut icon" type="image/png" href="/static/pic/favicon.ico"/>
@@ -40,7 +33,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="{% url 'index' %}">AMonitor v1.1</a>
+                <a class="navbar-brand" href="{% url 'index' %}">AMonitor v2.0 测试版</a>
             </div>
             <!-- /.navbar-header -->
 
@@ -95,9 +88,6 @@
                                 <li>
                                     <a href="{% url 'age' %}">用户年龄</a>
                                 </li>
-								<li>
-                                    <a href="{% url 'location' %}">分布地区</a>
-                                </li>
                             </ul>
                             <!-- /.nav-second-level -->
                         </li>
@@ -110,10 +100,10 @@
                                     <a href="{% url 'loan' %}"> 贷款</a>
                                 </li>
                                 <li>
-                                    <a href="{% url 'repayment' %}"> 还款</a>
+                                    <a href="{% url 'repayment' %}"> 还款（修改中）</a>
                                 </li>
                                 <li>
-                                    <a href="{% url 'income' %}"> 营业收入</a>
+                                    <a href="{% url 'income' %}"> 营业收入（修改中）</a>
                                 </li>
                                 <li>
                                     <a href="{% url 'delayRateFund' %}"> 逾期率</a>
@@ -165,7 +155,7 @@
                         {% endif %}
                         {% if perms.part_admin.collectPage %}
                         <li>
-                            <a href="{% url 'collectNum' %}"><i class="fa fa-wrench fa-fw"></i> 催收<span class="fa arrow"></span></a>
+                            <a href="{% url 'collectNum' %}"><i class="glyphicon glyphicon-earphone fa-fw"></i> 催收<span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level">
                                 <li>
                                     <a href="{% url 'collectNum' %}"> 催收情况</a>
@@ -178,7 +168,7 @@
                         {% endif %}
                         {% if perms.part_admin.marketPage %}
                         <li>
-                            <a href="{% url 'marketNum' %}"><i class="glyphicon glyphicon-lock fa-fw"></i> 市场<span class="fa arrow"></span></a>
+                            <a href="{% url 'marketNum' %}"><i class="glyphicon glyphicon-th-large fa-fw"></i> 市场<span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level">
                                 <li>
                                     <a href="{% url 'marketNum' %}">今日贷款情况</span></a>
@@ -195,13 +185,9 @@
 		{% block page_content %}{% endblock %}
     </div>
     </div>
-    <!-- Bootstrap Core JavaScript -->
+
     <script src="../static/js/bootstrap.min.js"></script>
-
-    <!-- Metis Menu Plugin JavaScript -->
     <script src="../static/js/metisMenu.min.js"></script>
-
-    <!-- Custom Theme JavaScript -->
     <script src="../static/js/admin.js"></script>
 
 </body>
