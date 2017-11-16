@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title> AMonitor </title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="../static/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- MetisMenu CSS -->
+    <link href="../static/css/metisMenu.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="../static/css/admin.css" rel="stylesheet">
+
+    <!-- Custom Fonts -->
+    <link href="../static/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+    <link rel="shortcut icon" type="image/png" href="/static/pic/favicon.ico"/>
+
+</head>
+
+<body>
+
+    <div id="wrapper">
+
+        <div id="wrapper">
+        <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="{% url 'index' %}">AMonitor v1.1</a>
+            </div>
+            <!-- /.navbar-header -->
+
+            <ul class="nav navbar-top-links navbar-right">
+                <!-- /.dropdown -->
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                        <i class="fa fa-user fa-fw"></i> {{user.username}} <i class="fa fa-caret-down"></i>
+                    <ul class="dropdown-menu dropdown-user">
+                        <li><a href="#"><i class="fa fa-user fa-fw"></i> User Profile</a></li>
+                        <li><a href="#"><i class="fa fa-gear fa-fw"></i> Settings</a></li>
+                        <li class="divider"></li>
+                        <li><a href="{% url 'logout' %}"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
+                        </li>
+                    </ul>
+                    <!-- /.dropdown-user -->
+                </li>
+                <!-- /.dropdown -->
+            </ul>
+            <!-- /.navbar-top-links -->
+
+            <div class="navbar-default sidebar" role="navigation">
+                <div class="sidebar-nav navbar-collapse">
+                    <ul class="nav" id="side-menu">
+                        <li class="sidebar-search">
+                            <div class="input-group custom-search-form">
+                                <input type="text" class="form-control" placeholder="Search...">
+                                <span class="input-group-btn">
+                                <button class="btn btn-default" type="button">
+                                    <i class="fa fa-search"></i>
+                                </button>
+                            </span>
+                            </div>
+                            <!-- /input-group -->
+                        </li>
+                        {% if perms.part_admin.indexPage %}
+                        <li>
+                            <a href="{% url 'index' %}"><i class="fa fa-dashboard fa-fw"></i> 仪表盘</a>
+                        </li>
+                        {% endif %}
+                        {% if perms.part_admin.userPage %}
+                        <li>
+                            
+                            <a href="#"><i class="fa fa-user fa-fw"></i> 用户概况<span class="fa arrow"></span></a>
+                            <ul class="nav nav-second-level">
+                                <li>
+                                    <a href="{% url 'increase' %}">用户增长</a>
+                                </li>
+                                <li>
+                                    <a href="{% url 'sex' %}">用户性别</a>
+                                </li>
+                                <li>
+                                    <a href="{% url 'age' %}">用户年龄</a>
+                                </li>
+								<li>
+                                    <a href="{% url 'location' %}">分布地区</a>
+                                </li>
+                            </ul>
+                            <!-- /.nav-second-level -->
+                        </li>
+                        {% endif %}
+                        {% if perms.part_admin.businessPage %}
+                        <li>
+                            <a href="{% url 'loan' %}"><i class="fa fa-bar-chart-o fa-fw"></i> 业务数据<span class="fa arrow"></span></a>
+							<ul class="nav nav-second-level">
+                                <li>
+                                    <a href="{% url 'loan' %}"> 贷款</a>
+                                </li>
+                                <li>
+                                    <a href="{% url 'repayment' %}"> 还款</a>
+                                </li>
+                                <li>
+                                    <a href="{% url 'income' %}"> 营业收入</a>
+                                </li>
+                                <li>
+                                    <a href="{% url 'delayRateFund' %}"> 逾期率</a>
+                                </li>
+                            </ul>
+						</li>
+                        {% endif %}
+                        {% if perms.part_admin.riskPage %}
+						<li>
+                            <a href="{% url 'aeyepassrate' %}"><i class="fa fa-key fa-fw"></i> 风险监控<span class="fa arrow"></span></a>
+							<ul class="nav nav-second-level">
+                                <li>
+                                    <a href="{% url 'aeyepassrate' %}">通过率</a>
+                                </li>
+                                <li>
+                                    <a href="{% url 'aeyedelayday' %}">逾期率</a>
+                                </li>
+                                <li>
+                                    <a href="{% url 'aeyegetrate' %}">取现率</a>
+                                </li>
+                            </ul>
+						</li>
+                        {% endif %}
+                        {% if perms.part_admin.financePage %}
+                        <li>
+                            <a href="{% url 'financetodayloan' %}"><i class="glyphicon glyphicon-yen"></i> 财务<span class="fa arrow"></span></a>
+                            <ul class="nav nav-second-level">
+                                <li>
+                                    <a href="{% url 'financetodayloan' %}">今日资金贷出情况</a>
+                                </li>
+                                <li>
+                                    <a href="{% url 'financetodayloan' %}">待添加<span class="fa arrow"></span></a>
+                                </li>
+                            </ul>
+                        </li>
+                        {% endif %}
+                        {% if perms.part_admin.auditPage %}
+                        <li>
+                            <a href="tables.html"><i class="fa fa-html5 fa-fw"></i> 信审<span class="fa arrow"></span></a>
+                            <ul class="nav nav-second-level">
+                                <li>
+                                    <a href="flot.html">总体</a>
+                                </li>
+                                <li>
+                                    <a href="morris.html">个人</a>
+                                </li>
+                            </ul>
+                        </li>
+                        {% endif %}
+                        {% if perms.part_admin.collectPage %}
+                        <li>
+                            <a href="{% url 'collectNum' %}"><i class="fa fa-wrench fa-fw"></i> 催收<span class="fa arrow"></span></a>
+                            <ul class="nav nav-second-level">
+                                <li>
+                                    <a href="{% url 'collectNum' %}"> 催收情况</a>
+                                </li>
+                                <li>
+                                    <a href="{% url 'collectRate' %}"> 催回率</a>
+                                </li>
+                            </ul>
+                        </li>
+                        {% endif %}
+                        {% if perms.part_admin.marketPage %}
+                        <li>
+                            <a href="{% url 'marketNum' %}"><i class="glyphicon glyphicon-lock fa-fw"></i> 市场<span class="fa arrow"></span></a>
+                            <ul class="nav nav-second-level">
+                                <li>
+                                    <a href="{% url 'marketNum' %}">今日贷款情况</span></a>
+                                </li>
+                            </ul>
+                        </li>
+                        {% endif %}
+                    </ul>
+                </div>
+                <!-- /.sidebar-collapse -->
+            </div>
+            <!-- /.navbar-static-side -->
+        </nav>
+		{% block page_content %}{% endblock %}
+    </div>
+    </div>
+    <!-- Bootstrap Core JavaScript -->
+    <script src="../static/js/bootstrap.min.js"></script>
+
+    <!-- Metis Menu Plugin JavaScript -->
+    <script src="../static/js/metisMenu.min.js"></script>
+
+    <!-- Custom Theme JavaScript -->
+    <script src="../static/js/admin.js"></script>
+
+</body>
+
+</html>

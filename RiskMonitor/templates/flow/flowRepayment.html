@@ -1,0 +1,27 @@
+{% extends "base_frame.html" %}
+{% block page_content %}
+    <div id="page-wrapper">
+            <div class="row">
+                <div class="col-lg-12">
+                    <h1 class="page-header">业务-还款情况</h1>
+                </div>
+                <!-- /.col-lg-12 -->
+            </div>
+            <!-- /.row -->
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <i class="fa fa-bar-chart-o fa-fw"></i> 还款金额增长曲线
+                        </div>
+                        <div class="panel-body">
+                            <div id="repaymentMoney" style="width: 100%;height: 400px;"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script src="../static/js/echarts.min.js"></script>
+        <script src="../static/js/jquery-3.2.1.min.js"></script>
+        <script src="../static/js/flowRepayment.js"></script>
+{% endblock %}
