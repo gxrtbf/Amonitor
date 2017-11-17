@@ -9,6 +9,9 @@ import os
 import datetime
 import time
 
+reload(sys)  
+sys.setdefaultencoding('utf8') 
+
 #添加路径
 sys.path.insert(0,os.path.abspath(os.path.dirname(os.path.dirname(__file__))))
 
@@ -47,8 +50,8 @@ def hopperHead():
 	reloanNum = data.values[0][0]
 
 	#数据插入
-	sql = """ insert into dayAddApi_IndexHopper(register,applys,passs,loan,reloan,createDate) values (%s,%s,%s,%s,%s,%s) """
-	dset = [(registerNum,applyNum,passNum,loanNum,reloanNum,str(datetime.datetime.now())[:10])]
+	sql = """ insert into dayAddApi_indexhopper(register,applys,passs,loan,reloan,createDate) values (%s,%s,%s,%s,%s,%s) """
+	dset = [(registerNum,applyNum,passNum,loanNum,reloanNum,str(datetime.datetime.now()-datetime.timedelta(days=1))[:10])]
 	status = pysql.insertData(sql,dset)
 	log.log('漏斗数据更新状态-{}'.format(status),'info')
 
@@ -66,8 +69,8 @@ def hopperHead():
 	tradeMoney = int(data.values[0][0])
 
 	#数据插入
-	sql = """ insert into dayAddApi_IndexHead(sumUser,activeUser,tradeNum,tradeMoney,createDate) values (%s,%s,%s,%s,%s) """
-	dset = [(sumUser,activeUser,tradeNum,tradeMoney,str(datetime.datetime.now())[:10])]
+	sql = """ insert into dayAddApi_indexhead(sumUser,activeUser,tradeNum,tradeMoney,createDate) values (%s,%s,%s,%s,%s) """
+	dset = [(sumUser,activeUser,tradeNum,tradeMoney,str(datetime.datetime.now()-datetime.timedelta(days=1))[:10])]
 	status = pysql.insertData(sql,dset)
 	log.log('首页标题数据更新状态-{}！'.format(status),'info')
 
@@ -124,9 +127,10 @@ def userPlace():
 		key = item['省'].decode('utf-8') + item['市'].decode('utf-8')
 		cityName.append(city[key])
 		cityNum.append(item['人数'])
-	ctime = [str(datetime.datetime.now())[:10]]*len(cityName)
+	ctime = [str(datetime.datetime.now()-datetime.timedelta(days=1))[:10]]*len(cityName)
 
-	sql = """ insert into dayAddApi_IndexCity(cityName,numInCity,createDate) values (%s,%s,%s) """
+	sql = """ insert into dayAddApi_indexcity(cityName,numInCity,createDate) values (%s,%s,%s) """
+	cityName = [x.decode("utf-8") for x in cityName]
 	dset = zip(cityName,cityNum,ctime)
 	status = pysql.insertData(sql,dset)
 
@@ -182,8 +186,8 @@ def dashbook():
 	data = pysql.dbInfo(sql)
 	avgServiceMoney = round(data.values[0][0],2)
 
-	sql = """ insert into dayAddApi_IndexDash(avgTermNum,avgMoney,avgServiceMoney,createDate) values (%s,%s,%s,%s) """
-	dset = [(avgTermNum,avgMoney,avgServiceMoney,str(datetime.datetime.now())[:10])]
+	sql = """ insert into dayAddApi_indexdash(avgTermNum,avgMoney,avgServiceMoney,createDate) values (%s,%s,%s,%s) """
+	dset = [(avgTermNum,avgMoney,avgServiceMoney,str(datetime.datetime.now()-datetime.timedelta(days=1))[:10])]
 	status = pysql.insertData(sql,dset)
 
 	log.log('仪表盘数据更新状态-{}！'.format(status),'info')

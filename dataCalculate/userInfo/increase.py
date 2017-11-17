@@ -39,7 +39,7 @@ def timeScale(startTime = "2017-03-01"):
 #数据增长
 def userNum():
 	timeList = timeScale()
-	sql = 'select distinct createDate from dayAddApi_UserIncrease'
+	sql = 'select distinct createDate from dayAddApi_userincrease'
 	tmRest = pysql.dbInfoLocal(sql)
 	tmRest = tmRest.fillna(0)
 
@@ -91,7 +91,7 @@ def userNum():
 		allowNum = data.values[0][0]
 
 		#数据插入
-		sql = """ insert into dayAddApi_UserIncrease(register,allow,newApply,oldApply,createDate) values (%s,%s,%s,%s,%s) """
+		sql = """ insert into dayAddApi_userincrease(register,allow,newApply,oldApply,createDate) values (%s,%s,%s,%s,%s) """
 		dset = [(registerNum,allowNum,newApplyNum,oldApplyNum,stTime)]
 		status = pysql.insertData(sql,dset)
 		log.log('用户增长数据更新状态{}({})！'.format(status,stTime),'info')

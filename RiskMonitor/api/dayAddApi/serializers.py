@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-#index
+# #index
 from models import IndexHead,IndexDash,IndexHopper,IndexCity,IndexAcrepay
 
 class IndexHeadSerializer(serializers.ModelSerializer):

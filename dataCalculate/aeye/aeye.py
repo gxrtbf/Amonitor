@@ -36,7 +36,7 @@ def timeScale(startTime = "2017-04-15"):
 def passRate():
 
 	timeList = timeScale()
-	sql = 'select distinct createDate from dayAddApi_AeyePassRate'
+	sql = 'select distinct createDate from dayAddApi_aeyepassrate'
 	tmRest = pysql.dbInfoLocal(sql)
 	tmRest = tmRest.fillna(0)
 
@@ -72,7 +72,7 @@ def passRate():
 		#通过率
 		passRate = round(passNum/float(applyNum)*100,2)
 
-		sql = """ insert into dayAddApi_AeyePassRate(applyNum,passNum,passRate,createDate) values (%s,%s,%s,%s) """
+		sql = """ insert into dayAddApi_aeyepassrate(applyNum,passNum,passRate,createDate) values (%s,%s,%s,%s) """
 		dset = [(applyNum,passNum,passRate,stTime)]
 		status = pysql.insertData(sql,dset)
 		log.log('通过率数据更新状态-{}({})！'.format(status,stTime),'info')
@@ -117,11 +117,11 @@ def delayDay():
 	sM3 = list(pt['逾期率M3'])
 	stt = list(pt['times'])
 
-	sql = "delete from dayAddApi_AeyeDelayRate"
+	sql = "delete from dayAddApi_aeyedelayrate"
 	status = pysql.deletetData(sql)
 	log.log(u'逾期数据删除状态-{}！'.format(status),'info')
 
-	sql = """ insert into dayAddApi_AeyeDelayRate(delayRate0,delayRate3,delayRate7,delayRate10,delayRate20,delayRateM1,delayRateM2,delayRateM3,createDate) values (%s,%s,%s,%s,%s,%s,%s,%s,%s) """
+	sql = """ insert into dayAddApi_aeyedelayrate(delayRate0,delayRate3,delayRate7,delayRate10,delayRate20,delayRateM1,delayRateM2,delayRateM3,createDate) values (%s,%s,%s,%s,%s,%s,%s,%s,%s) """
 	dset = zip(s0,s3,s7,s10,s20,sM1,sM2,sM3,stt)
 	status = pysql.insertData(sql,dset)
 	log.log(u'逾期数据更新状态-{}！'.format(status),'info')
@@ -129,7 +129,7 @@ def delayDay():
 #逾期情况（新老）
 def delayDayNO():
 	timeList = timeScale('2017-08-30')[:-3]
-	sql = "select distinct createDate from dayAddApi_AeyeDelayRateNO ";
+	sql = "select distinct createDate from dayAddApi_aeyedelayrateno ";
 	tmRest = pysql.dbInfoLocal(sql)
 	tmRest = tmRest.fillna(0)
 
@@ -203,7 +203,7 @@ def delayDayNO():
 		oldPaid = data.values[0][0]
 		oldDelayRate = round((oldPaySum - oldPaid)/oldRepaySum*100,2)
 
-		sql = """ insert into dayAddApi_AeyeDelayRateNO(newPaySum,newRepaySum,newPaid,newDelayRate3,oldPaySum,oldRepaySum,oldPaid,oldDelayRate3,createDate) values (%s,%s,%s,%s,%s,%s,%s,%s,%s) """
+		sql = """ insert into dayAddApi_aeyedelayrateno(newPaySum,newRepaySum,newPaid,newDelayRate3,oldPaySum,oldRepaySum,oldPaid,oldDelayRate3,createDate) values (%s,%s,%s,%s,%s,%s,%s,%s,%s) """
 		dset = [(newPaySum,newRepaySum,newPaid,newDelayRate,oldPaySum,oldRepaySum,oldPaid,oldDelayRate,stTime)]
 		status = pysql.insertData(sql,dset)
 		log.log(u'逾期3天(新老)数据更新状态-{}！({})！'.format(status,stTime),'info')
@@ -212,7 +212,7 @@ def delayDayNO():
 def getRate():
 
 	timeList = timeScale('2017-05-01')
-	sql = "select distinct createDate from dayAddApi_AeyeGetRate";
+	sql = "select distinct createDate from dayAddApi_aeyegetrate";
 	tmRest = pysql.dbInfoLocal(sql)
 	tmRest = tmRest.fillna(0)
 
@@ -245,7 +245,7 @@ def getRate():
 		
 		sucRate = round(sucNum/float(tryNum)*100,2)
 
-		sql = """ insert into dayAddApi_AeyeGetRate(tryNum,sucNum,sucRate,createDate) values (%s,%s,%s,%s) """
+		sql = """ insert into dayAddApi_aeyegetrate(tryNum,sucNum,sucRate,createDate) values (%s,%s,%s,%s) """
 		dset = [(tryNum,sucNum,sucRate,stTime)]
 		status = pysql.insertData(sql,dset)
 		log.log(u'成功贷款数据更新状态-{}！({})！'.format(status,stTime),'info')

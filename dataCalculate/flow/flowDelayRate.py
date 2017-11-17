@@ -86,11 +86,11 @@ def delayDayFund():
 		stt = list(pt['times'])
 		fnanme = [fundName] * len(pt)
 
-		sql = "delete from dayAddApi_FlowDelayRate where fundName='" + fundName + "'"
+		sql = "delete from dayAddApi_flowdelayrate where fundName='" + fundName + "'"
 		status = pysql.deletetData(sql)
 		log.log(u'逾期数据删除状态-{}！(资金方{})'.format(status,fundName),'info')
 
-		sql = """ insert into dayAddApi_FlowDelayRate(fundName,delayRate0,delayRate3,delayRate7,delayRate10,delayRate20,delayRateM1,delayRateM2,delayRateM3,createDate) values (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s) """
+		sql = """ insert into dayAddApi_flowdelayrate(fundName,delayRate0,delayRate3,delayRate7,delayRate10,delayRate20,delayRateM1,delayRateM2,delayRateM3,createDate) values (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s) """
 		dset = zip(fnanme,s0,s3,s7,s10,s20,sM1,sM2,sM3,stt)
 		status = pysql.insertData(sql,dset)
 		log.log(u'逾期数据更新状态-{}！(资金方{})'.format(status,fundName),'info')
@@ -102,7 +102,7 @@ def delayDayNOFund():
 		ids = fundId[fundName][0]
 
 		timeList = timeScale('2017-08-30')[:-3]
-		sql = "select distinct createDate from dayAddApi_FlowDelayRateNO where fundName='" + fundName + "'";
+		sql = "select distinct createDate from dayAddApi_flowdelayrateno where fundName='" + fundName + "'";
 		tmRest = pysql.dbInfoLocal(sql)
 		tmRest = tmRest.fillna(0)
 
@@ -180,7 +180,7 @@ def delayDayNOFund():
 			oldPaid = data.values[0][0]
 			oldDelayRate = round((oldPaySum - oldPaid)/oldRepaySum*100,2)
 
-			sql = """ insert into dayAddApi_FlowDelayRateNO(fundName,newPaySum,newRepaySum,newPaid,newDelayRate3,oldPaySum,oldRepaySum,oldPaid,oldDelayRate3,createDate) values (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s) """
+			sql = """ insert into dayAddApi_flowdelayrateno(fundName,newPaySum,newRepaySum,newPaid,newDelayRate3,oldPaySum,oldRepaySum,oldPaid,oldDelayRate3,createDate) values (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s) """
 			dset = [(fundName,newPaySum,newRepaySum,newPaid,newDelayRate,oldPaySum,oldRepaySum,oldPaid,oldDelayRate,stTime)]
 			status = pysql.insertData(sql,dset)
 			log.log(u'逾期3天(新老)数据更新状态-{}！({})(资金方{})！'.format(status,stTime,fundName),'info')

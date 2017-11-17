@@ -42,7 +42,7 @@ def passRateloan():
 	endTime = str(datetime.date.today()-datetime.timedelta(days=3))
 
 	timeList = timeScale('2017-05-01')
-	sql = 'select distinct createDate from dayAddApi_marketNum'
+	sql = 'select distinct createDate from dayAddApi_marketnum'
 	tmRest = pysql.dbInfoLocal(sql)
 	tmRest = tmRest.fillna(0)
 
@@ -69,7 +69,7 @@ def passRateloan():
 			paidNum = data.values[0][0]
 
 			sql = """
-				select applyPass from dayAddApi_marketNum
+				select applyPass from dayAddApi_marketnum
 				where createDate >= '{}' and createDate < '{}' 
 			""".format(stTime,edTime1)
 			data = pysql.dbInfoLocal(sql)
@@ -79,7 +79,7 @@ def passRateloan():
 			paidRate = round(paidNum/float(applyPass*100),2) if paidNum > 2 else 0
 			#存储数据
 			sql = """ 
-				update dayAddApi_marketNum 
+				update dayAddApi_marketnum 
 	   			set paidRate = {} ,paidNum = {}
 	 			where createDate >= '{}' and createDate < '{}' 
 			""".format(paidRate,paidNum,stTime,edTime1)
@@ -199,7 +199,7 @@ def passRateloan():
 			lp = lp[lp<np.percentile(data['wait_second'],85)]
 			dayNum['auditTimeToday'] = int(np.mean(lp)/60)
 
-		sql = """ insert into dayAddApi_marketNum(applyPass,firstDayT,firstDay,firstDayRate,tryRate,secondDay,secondDayRate,thirdDay,thirdDayRate,paidNum,paidRate,auditTime,auditTimeWit,auditTimeToday,createDate) values (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s) """
+		sql = """ insert into dayAddApi_marketnum(applyPass,firstDayT,firstDay,firstDayRate,tryRate,secondDay,secondDayRate,thirdDay,thirdDayRate,paidNum,paidRate,auditTime,auditTimeWit,auditTimeToday,createDate) values (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s) """
 		dset = [(
 			dayNum['applyPass'] ,
 			dayNum['firstDayT'] ,
