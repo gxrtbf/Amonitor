@@ -126,6 +126,7 @@ tableModel = {
 }
 
 import datetime
+from django.db.models import Max
 
 #@permission_required('part_admin.financePage')
 @api_view(['GET'])
@@ -144,7 +145,8 @@ def indexhead_item(request):
 
     		content = request.GET.get('content',None)
     		if content == 'item':
-    			yesterday = str(datetime.datetime.now() - datetime.timedelta(days=1))[:10]
+    			#yesterday = str(datetime.datetime.now() - datetime.timedelta(days=1))[:10]
+    			yesterday = str(objectModel.objects.all().aggregate(Max('createDate')).values()[0])[:10]
     			temp = objectModel.objects.filter(createDate=yesterday)
     			serializer = objectSerializer(temp, many=True)
     			return Response(serializer.data)
