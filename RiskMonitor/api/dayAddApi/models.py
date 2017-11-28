@@ -152,11 +152,9 @@ class FlowDelayRateNO(models.Model):
 	fundName = models.CharField(max_length=128,default='credan')
 	newDelayRate3 = models.FloatField(default=0.0)
 	newRepaySum = models.IntegerField(default=0)
-	newPaySum = models.IntegerField(default=0)
 	newPaid = models.IntegerField(default=0)
 	oldDelayRate3 = models.FloatField(default=0.0)
 	oldRepaySum = models.IntegerField(default=0)
-	oldPaySum = models.IntegerField(default=0)
 	oldPaid = models.IntegerField(default=0)
 	createDate = models.DateField(default=timezone.now)
 
@@ -267,11 +265,9 @@ class AeyeDelayRate(models.Model):
 class AeyeDelayRateNO(models.Model):
 	newDelayRate3 = models.FloatField(default=0.0)
 	newRepaySum = models.IntegerField(default=0)
-	newPaySum = models.IntegerField(default=0)
 	newPaid = models.IntegerField(default=0)
 	oldDelayRate3 = models.FloatField(default=0.0)
 	oldRepaySum = models.IntegerField(default=0)
-	oldPaySum = models.IntegerField(default=0)
 	oldPaid = models.IntegerField(default=0)
 	createDate = models.DateField(primary_key=True,default=timezone.now)
 

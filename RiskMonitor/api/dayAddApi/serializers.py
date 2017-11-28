@@ -84,7 +84,7 @@ class FlowDelayRateSerializer(serializers.ModelSerializer):
 class FlowDelayRateNOSerializer(serializers.ModelSerializer):
     class Meta:
         model = FlowDelayRateNO
-        fields = ('fundName', 'newDelayRate3', 'newRepaySum', 'newPaySum', 'newPaid', 'oldDelayRate3', 'oldRepaySum', 'oldPaySum', 'oldPaid', 'createDate', 'createDate')
+        fields = ('fundName', 'newDelayRate3', 'newRepaySum', 'newPaid', 'oldDelayRate3', 'oldRepaySum', 'oldPaid', 'createDate', 'createDate')
 
 #collect
 from models import CollectRate,CollectNum,CollectDis
@@ -134,4 +134,4 @@ class AeyeDelayRateSerializer(serializers.ModelSerializer):
 class AeyeDelayRateNOSerializer(serializers.ModelSerializer):
     class Meta:
         model = AeyeDelayRateNO
-        fields = ('newDelayRate3', 'newRepaySum', 'newPaySum', 'newPaid', 'oldDelayRate3', 'oldRepaySum', 'oldPaySum', 'oldPaid', 'createDate', 'createDate')
+        fields = ('newDelayRate3', 'newRepaySum', 'newPaid', 'oldDelayRate3', 'oldRepaySum', 'oldPaid', 'createDate', 'createDate')

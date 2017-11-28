@@ -61,9 +61,10 @@ def passRate():
 		data = data.fillna(0)
 		applyNum = data.values[0][0]
 
-		#每日审核量
+		#每日通过量
 		sql = """
 			select count(distinct user_id) from ci_cash_apply_info where audit_date >= '{}' and audit_date < '{}' and status = 'SUCCESS'
+
 		""".format(stTime,edTime)
 		data = pysql.dbInfo(sql)
 		data = data.fillna(0)
@@ -77,11 +78,97 @@ def passRate():
 		status = pysql.insertData(sql,dset)
 		log.log('通过率数据更新状态-{}({})！'.format(status,stTime),'info')
 
+#通过率新老
+def passRateNO():
+
+	timeList = timeScale()
+	sql = 'select distinct createDate from dayAddApi_aeyepassrateno'
+	tmRest = pysql.dbInfoLocal(sql)
+	tmRest = tmRest.fillna(0)
+
+	tmwait = []
+	if not tmRest.empty:
+		tmwait = [str(x)[:10] for x in tmRest['createDate']]
+
+	for i in range(len(timeList)-1):
+		stTime = timeList[i]
+		edTime = timeList[i+1]
+
+		if stTime in tmwait:
+			continue
+
+		print '通过率' + stTime
+
+		#每日审核量 新
+		sql = """
+			select count(distinct user_id) from ci_cash_apply_info 
+			where audit_date >= '{}' and audit_date < '{}'
+			and user_id not in (
+				select distinct user_id from ci_cash_apply_info
+				where audit_date < '{}' and status = 'SUCCESS'
+			)
+		""".format(stTime,edTime,stTime)
+		data = pysql.dbInfo(sql)
+		data = data.fillna(0)
+		newApplyNum = data.values[0][0]
+
+		#每日通过量 新
+		sql = """
+			select count(distinct user_id) from ci_cash_apply_info 
+			where audit_date >= '{}' and audit_date < '{}'
+			and user_id not in (
+				select distinct user_id from ci_cash_apply_info
+				where audit_date < '{}' and status = 'SUCCESS'
+			) and status = 'SUCCESS'
+			
+		""".format(stTime,edTime)
+		data = pysql.dbInfo(sql)
+		data = data.fillna(0)
+		newPassNum = data.values[0][0]
+
+		#通过率 新
+		newPassRate = round(passNum/float(applyNum)*100,2)
+
+		#每日审核量 老
+		sql = """
+			select count(distinct user_id) from ci_cash_apply_info 
+			where audit_date >= '{}' and audit_date < '{}'
+			and user_id in (
+				select distinct user_id from ci_cash_apply_info
+				where audit_date < '{}' and status = 'SUCCESS'
+			)
+		""".format(stTime,edTime,stTime)
+		data = pysql.dbInfo(sql)
+		data = data.fillna(0)
+		oldApplyNum = data.values[0][0]
+
+		#每日通过量 老
+		sql = """
+			select count(distinct user_id) from ci_cash_apply_info 
+			where audit_date >= '{}' and audit_date < '{}'
+			and user_id in (
+				select distinct user_id from ci_cash_apply_info
+				where audit_date < '{}' and status = 'SUCCESS'
+			) and status = 'SUCCESS'
+			
+		""".format(stTime,edTime)
+		data = pysql.dbInfo(sql)
+		data = data.fillna(0)
+		oldPassNum = data.values[0][0]
+
+		#通过率 老
+		oldPassRate = round(passNum/float(applyNum)*100,2)
+
+		sql = """ insert into dayAddApi_aeyepassrate(applyNum,passNum,passRate,createDate) values (%s,%s,%s,%s) """
+		dset = [(applyNum,passNum,passRate,stTime)]
+		status = pysql.insertData(sql,dset)
+		log.log('通过率数据更新状态-{}({})！'.format(status,stTime),'info')
+
 #逾期率
 def delayDay():
 	#逾期情况 not in (3,4,5,6,1001)
 	sql = """
-		select DATE_FORMAT(b.termDate,'%Y-%m-%d') 'date',sum(a.payMoney) 'allPayMoney',sum(b.repayMoney+b.overdueInterest+b.overdueFee) 'allMoney' from loan a,loan_repaying b 
+		select DATE_FORMAT(b.termDate,'%Y-%m-%d') 'date',sum(b.repayMoney) 'allMoney' from loan a,loan_repaying b 
 		where a.id=b.loanId and a.status=6 and b.compatibleStatus not in ('UNPAID','CANCEL') and b.productId not in (3,4,5,6,1001)
 		and b.termDate < DATE_FORMAT(now(),'%Y-%m-%d')
 		GROUP BY DATE_FORMAT(b.termDate,'%Y-%m-%d');
@@ -91,7 +178,7 @@ def delayDay():
 	pp = []
 	for day in delayPoint:
 		sql = """
-			select DATE_FORMAT(c.termDate,'%Y-%m-%d') 'date',sum(c.payMoney) 'payMoney' from (
+			select DATE_FORMAT(c.termDate,'%Y-%m-%d') 'date',sum(c.repayMoney) 'payMoney' from (
 			select a.payMoney,b.* from loan a,loan_repaying b 
 			where a.id=b.loanId and a.status=6 and b.compatibleStatus not in ('UNPAID','CANCEL') and b.productId not in (3,4,5,6,1001)
 			and b.termDate < DATE_FORMAT(now(),'%Y-%m-%d')
@@ -101,7 +188,7 @@ def delayDay():
 		plan = pysql.dbInfo(sql)
 
 		repay = pd.merge(alldata,plan)
-		pp.append(pd.Series([round(x*100,2) for x in (repay['allPayMoney']-repay['payMoney'])/repay['allMoney']],index=repay['date']))
+		pp.append(pd.Series([round(x*100,2) for x in (repay['allMoney']-repay['payMoney'])/repay['allMoney']],index=repay['date']))
 	pt = pd.concat(pp, axis=1, join_axes=[pp[0].index])
 	pt.columns = ['首逾率','逾期率3+','逾期率7+','逾期率10+','逾期率20+','逾期率M1','逾期率M2','逾期率M3']
 	pt = pt.fillna(0)
@@ -144,12 +231,12 @@ def delayDayNO():
 		if stTime in tmwait:
 			continue
 
-		print u'逾期(新老)3天逾期率' + stTime
+		print '逾期(新老)3天逾期率' + stTime
 
 		#分新老首逾情况
 		#new
 		sql = """
-			select sum(b.repayMoney+b.overdueInterest+b.overdueFee),sum(a.payMoney)
+			select sum(a.repayMoney)
 			from loan a,loan_repaying b 
 			where a.id=b.loanId and a.status=6 and b.compatibleStatus not in ('UNPAID','CANCEL') and b.productId not in (3,4,5,6,1001)
 			and b.termDate >= '{}' and b.termDate < '{}'
@@ -158,10 +245,9 @@ def delayDayNO():
 		data = pysql.dbInfo(sql)
 		data = data.fillna(0)
 		newRepaySum = data.values[0][0]
-		newPaySum = data.values[0][1]
 
 		sql = """
-			select sum(a.payMoney)
+			select sum(a.repayMoney)
 			from loan a,loan_repaying b 
 			where a.id=b.loanId and a.status=6 and b.compatibleStatus not in ('UNPAID','CANCEL') and b.productId not in (3,4,5,6,1001)
 			and b.termDate >= '{}' and b.termDate < '{}' 
@@ -173,10 +259,10 @@ def delayDayNO():
 		data = pysql.dbInfo(sql)
 		data = data.fillna(0)
 		newPaid = data.values[0][0]
-		newDelayRate = round((newPaySum - newPaid)/newRepaySum*100,2)
+		newDelayRate = round((newRepaySum - newPaid)/newRepaySum*100,2)
 		#old
 		sql = """
-			select sum(b.repayMoney+b.overdueInterest+b.overdueFee),sum(a.payMoney)
+			select sum(a.repayMoney)
 			from loan a,loan_repaying b 
 			where a.id=b.loanId and a.status=6 and b.compatibleStatus not in ('UNPAID','CANCEL') and b.productId not in (3,4,5,6,1001)
 			and b.termDate >= '{}' and b.termDate < '{}' 
@@ -187,9 +273,8 @@ def delayDayNO():
 		data = pysql.dbInfo(sql)
 		data = data.fillna(0)
 		oldRepaySum = data.values[0][0]
-		oldPaySum = data.values[0][1]
 		sql = """
-			select sum(a.payMoney)
+			select sum(a.repayMoney)
 			from loan a,loan_repaying b 
 			where a.id=b.loanId and a.status=6 and b.compatibleStatus not in ('UNPAID','CANCEL') and b.productId not in (3,4,5,6,1001)
 			and b.termDate >= '{}' and b.termDate < '{}' 
@@ -201,10 +286,10 @@ def delayDayNO():
 		data = pysql.dbInfo(sql)
 		data = data.fillna(0)
 		oldPaid = data.values[0][0]
-		oldDelayRate = round((oldPaySum - oldPaid)/oldRepaySum*100,2)
+		oldDelayRate = round((oldRepaySum - oldPaid)/oldRepaySum*100,2)
 
-		sql = """ insert into dayAddApi_aeyedelayrateno(newPaySum,newRepaySum,newPaid,newDelayRate3,oldPaySum,oldRepaySum,oldPaid,oldDelayRate3,createDate) values (%s,%s,%s,%s,%s,%s,%s,%s,%s) """
-		dset = [(newPaySum,newRepaySum,newPaid,newDelayRate,oldPaySum,oldRepaySum,oldPaid,oldDelayRate,stTime)]
+		sql = """ insert into dayAddApi_aeyedelayrateno(newRepaySum,newPaid,newDelayRate3,oldRepaySum,oldPaid,oldDelayRate3,createDate) values (%s,%s,%s,%s,%s,%s,%s) """
+		dset = [(newRepaySum,newPaid,newDelayRate,oldRepaySum,oldPaid,oldDelayRate,stTime)]
 		status = pysql.insertData(sql,dset)
 		log.log(u'逾期3天(新老)数据更新状态-{}！({})！'.format(status,stTime),'info')
 
@@ -227,7 +312,7 @@ def getRate():
 		if stTime in tmwait:
 			continue
 
-		print u'成功贷款率' + stTime
+		print '成功贷款率' + stTime
 
 		sql = """
 			select count(distinct userSid) from loan where createdTime >= '{}' and createdTime < '{}'
@@ -252,6 +337,7 @@ def getRate():
 
 def main():
 	passRate()
+	#passRateNO()
 	delayDay()
 	delayDayNO()
 	getRate()

@@ -65,7 +65,7 @@ def userNum():
 
 		#申请（新老）
 		sql = """
-			select count(*) from ci_cash_apply_info 
+			select count(distinct user_id) from ci_cash_apply_info 
 			where create_time > '{}' and create_time < '{}' 
 			and user_id not in (select distinct user_id from ci_cash_apply_info where create_time < '{}');
 		""".format(stTime,edTime,stTime)
@@ -74,7 +74,7 @@ def userNum():
 		newApplyNum = data.values[0][0]
 
 		sql = """
-			select count(*) from ci_cash_apply_info 
+			select count(distinct user_id) from ci_cash_apply_info 
 			where create_time > '{}' and create_time < '{}' 
 			and user_id in (select distinct user_id from ci_cash_apply_info where create_time < '{}');
 		""".format(stTime,edTime,stTime)
@@ -84,7 +84,7 @@ def userNum():
 
 		#授信
 		sql = """
-	 		select sum(1) from ci_cash_apply_info where create_time > '{}' and create_time < '{}' and status in ('FA_SUCCESS','SUCCESS')
+	 		select count(distinct user_id) from ci_cash_apply_info where audit_date > '{}' and audit_date < '{}' and status in ('SUCCESS')
 		""".format(stTime,edTime)
 		data = pysql.dbInfo(sql)
 		data = data.fillna(0)
