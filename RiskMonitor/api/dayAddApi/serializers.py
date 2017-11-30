@@ -59,7 +59,7 @@ class UserIncreaseSerializer(serializers.ModelSerializer):
 
 
 #flow
-from models import FlowLoanMoney,FlowLoanMoneyNO,FlowLoanMoneySum,FlowDelayRate,FlowDelayRateNO
+from models import FlowLoanMoney,FlowLoanMoneyNO,FlowLoanMoneySum,FlowDelayRate,FlowDelayRateNO,FlowLoanFund
 
 class FlowLoanMoneySerializer(serializers.ModelSerializer):
     class Meta:
@@ -85,6 +85,11 @@ class FlowDelayRateNOSerializer(serializers.ModelSerializer):
     class Meta:
         model = FlowDelayRateNO
         fields = ('fundName', 'newDelayRate3', 'newRepaySum', 'newPaid', 'oldDelayRate3', 'oldRepaySum', 'oldPaid', 'createDate', 'createDate')
+
+class FlowLoanFundSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = FlowLoanFund
+        fields = ('fundName', 'sumMoney', 'createDate')
 
 #collect
 from models import CollectRate,CollectNum,CollectDis

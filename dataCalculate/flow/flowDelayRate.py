@@ -46,7 +46,7 @@ def delayDayFund():
 		#逾期情况 not in (3,4,5,6,1001)
 		sql = """
 			select DATE_FORMAT(b.termDate,'%Y-%m-%d') 'date',sum(b.repayMoney) 'allMoney' from loan a,loan_repaying b 
-			where a.id=b.loanId and a.status=6 and b.compatibleStatus not in ('UNPAID','CANCEL') and a.fundPayAccountId in ({})
+			where a.id=b.loanId and a.status=6 and b.compatibleStatus not in ('CANCEL') and a.fundPayAccountId in ({})
 			and b.productId not in (3,4,5,6,1001)
 			and b.termDate < DATE_FORMAT(now(),'%Y-%m-%d')
 			GROUP BY DATE_FORMAT(b.termDate,'%Y-%m-%d');
@@ -59,7 +59,7 @@ def delayDayFund():
 			sql = """
 				select DATE_FORMAT(c.termDate,'%Y-%m-%d') 'date',sum(c.repayMoney) 'payMoney' from (
 				select a.payMoney,b.* from loan a,loan_repaying b 
-				where a.id=b.loanId and a.status=6 and b.compatibleStatus not in ('UNPAID','CANCEL') and b.productId not in (3,4,5,6,1001)
+				where a.id=b.loanId and a.status=6 and b.compatibleStatus not in ('CANCEL') and b.productId not in (3,4,5,6,1001)
 				and a.fundPayAccountId in ({})
 				and b.termDate < DATE_FORMAT(now(),'%Y-%m-%d')
 				HAVING if(b.repaidTime is NULL,TO_DAYS(now()) - TO_DAYS(b.termDate),TO_DAYS(b.repaidTime) - TO_DAYS(b.termDate)) <= {}) c
@@ -124,7 +124,7 @@ def delayDayNOFund():
 			sql = """
 				select sum(a.repayMoney)
 				from loan a,loan_repaying b 
-				where a.id=b.loanId and a.status=6 and b.compatibleStatus not in ('UNPAID','CANCEL') and b.productId not in (3,4,5,6,1001)
+				where a.id=b.loanId and a.status=6 and b.compatibleStatus not in ('CANCEL') and b.productId not in (3,4,5,6,1001)
 				and b.termDate >= '{}' and b.termDate < '{}'
 				and a.userSid not in (select distinct userSid from loan_repaying where termDate < '{}')
 				and a.fundPayAccountId in ({})
@@ -136,7 +136,7 @@ def delayDayNOFund():
 			sql = """
 				select sum(a.repayMoney)
 				from loan a,loan_repaying b 
-				where a.id=b.loanId and a.status=6 and b.compatibleStatus not in ('UNPAID','CANCEL') and b.productId not in (3,4,5,6,1001)
+				where a.id=b.loanId and a.status=6 and b.compatibleStatus not in ('CANCEL') and b.productId not in (3,4,5,6,1001)
 				and b.termDate >= '{}' and b.termDate < '{}' 
 				and if(b.repaidTime is NULL,TO_DAYS(now()) - TO_DAYS(b.termDate),TO_DAYS(b.repaidTime) - TO_DAYS(b.termDate)) <= 3
 				and a.userSid not in (
@@ -152,7 +152,7 @@ def delayDayNOFund():
 			sql = """
 				select sum(a.repayMoney)
 				from loan a,loan_repaying b 
-				where a.id=b.loanId and a.status=6 and b.compatibleStatus not in ('UNPAID','CANCEL') and b.productId not in (3,4,5,6,1001)
+				where a.id=b.loanId and a.status=6 and b.compatibleStatus not in ('CANCEL') and b.productId not in (3,4,5,6,1001)
 				and b.termDate >= '{}' and b.termDate < '{}' 
 				and a.userSid in (
 				select distinct userSid from loan_repaying where termDate < '{}'
@@ -165,7 +165,7 @@ def delayDayNOFund():
 			sql = """
 				select sum(a.repayMoney)
 				from loan a,loan_repaying b 
-				where a.id=b.loanId and a.status=6 and b.compatibleStatus not in ('UNPAID','CANCEL') and b.productId not in (3,4,5,6,1001)
+				where a.id=b.loanId and a.status=6 and b.compatibleStatus not in ('CANCEL') and b.productId not in (3,4,5,6,1001)
 				and b.termDate >= '{}' and b.termDate < '{}' 
 				and if(b.repaidTime is NULL,TO_DAYS(now()) - TO_DAYS(b.termDate),TO_DAYS(b.repaidTime) - TO_DAYS(b.termDate)) <= 3
 				and a.userSid in (
@@ -183,9 +183,53 @@ def delayDayNOFund():
 			status = pysql.insertData(sql,dset)
 			log.log(u'逾期3天(新老)数据更新状态-{}！({})(资金方{})！'.format(status,stTime,fundName),'info')
 
+
+#贷款情况 根据资金方区分
+def loanFund():
+
+	fundId = config.fundloanId
+	for fundName in fundId.keys():
+		ids = fundId[fundName][0]
+
+		timeList = timeScale('2017-08-30')
+		sql = "select distinct createDate from dayAddApi_flowloanfund where fundName='" + fundName + "'";
+		tmRest = pysql.dbInfoLocal(sql)
+		tmRest = tmRest.fillna(0)
+
+		tmwait = []
+		if not tmRest.empty:
+			tmwait = [str(x)[:10] for x in tmRest['createDate']]
+
+		for i in range(len(timeList)-1):
+			stTime = timeList[i]
+			edTime = timeList[i+1]
+
+			if stTime in tmwait:
+				continue
+
+			print u'贷款数据' + fundName + ' ' + stTime
+
+			sql = """
+				select sum(lendMoney) from loan 
+				where status=6 and productId not in (3,4,5,6,1001)
+				and createdTime >= '{}' and createdTime < '{}'
+				and fundPayAccountId in ({})
+			""".format(stTime,edTime,ids)
+			data = pysql.dbInfo(sql)
+			data = data.fillna(0)
+			lendMoney = data.values[0][0]
+
+			sql = """ insert into dayAddApi_flowloanfund(fundName,sumMoney,createDate) values (%s,%s,%s) """
+			dset = [(fundName,lendMoney,stTime)]
+			status = pysql.insertData(sql,dset)
+			log.log(u'每日贷款数据更新状态-{}！({})(资金方{})！'.format(status,stTime,fundName),'info')
+
+
+
 def main():
 	delayDayFund()
 	delayDayNOFund()
+	loanFund()
 	
  
 if __name__ == '__main__':

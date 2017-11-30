@@ -14,8 +14,8 @@ from models import UserAge,UserAgeAll,UserSex,UserSexAll,UserIncrease
 from serializers import UserAgeSerializer,UserAgeAllSerializer,UserSexSerializer,UserSexAllSerializer,UserIncreaseSerializer
 
 #flow
-from models import FlowLoanMoney,FlowLoanMoneyNO,FlowLoanMoneySum,FlowDelayRate,FlowDelayRateNO
-from serializers import FlowLoanMoneySerializer,FlowLoanMoneyNOSerializer,FlowLoanMoneySumSerializer,FlowDelayRateSerializer,FlowDelayRateNOSerializer
+from models import FlowLoanMoney,FlowLoanMoneyNO,FlowLoanMoneySum,FlowDelayRate,FlowDelayRateNO,FlowLoanFund
+from serializers import FlowLoanMoneySerializer,FlowLoanMoneyNOSerializer,FlowLoanMoneySumSerializer,FlowDelayRateSerializer,FlowDelayRateNOSerializer,FlowLoanFundSerializer
 
 #collect
 from models import CollectRate,CollectNum,CollectDis
@@ -90,6 +90,10 @@ tableModel = {
 	'flowdelayrateno': {
 			'models': FlowDelayRateNO,
 			'serializers': FlowDelayRateNOSerializer,
+	},
+	'flowloanfund': {
+			'models': FlowLoanFund,
+			'serializers': FlowLoanFundSerializer,
 	},
 	'collectrate': {
 			'models': CollectRate,

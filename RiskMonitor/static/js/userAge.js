@@ -1,5 +1,5 @@
 $(document).ready(function(){
-    $.get("../api/index?format=json&table=userage&content=list",function(dataset){
+    $.get("../api/v1/day?format=json&table=userage&content=list",function(dataset){
         var age1 = [];
         var age2 = [];
         var age3 = [];
@@ -135,7 +135,7 @@ $(document).ready(function(){
         };
         myChart.setOption(option);
     });
-    $.get("../api/index?format=json&table=userageall&content=item",function(dataset){
+    $.get("../api/v1/day?format=json&table=userageall&content=item",function(dataset){
         var myChart = echarts.init(document.getElementById('loudou'));
         var option = {
             title : {

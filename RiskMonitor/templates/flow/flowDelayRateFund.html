@@ -1,0 +1,99 @@
+{% extends "base_frame.html" %}
+{% block page_content %}
+        <div id="page-wrapper" >
+            <div class="row">
+                <div class="col-lg-12">
+                    <h1 class="page-header" id="fundId"></h1>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-success btn-lg dropdown-toggle" data-toggle="dropdown">
+                        资金方 <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li><a href="?fundId=快乐达连连账户">快乐达连连账户</a></li>
+                            <li><a href="?fundId=纵横新创">纵横新创</a></li>
+                            <li><a href="?fundId=口袋理财">口袋理财</a></li>
+                            <li><a href="?fundId=柚子理财">柚子理财</a></li>
+                            <li><a href="?fundId=魔贷金融">魔贷金融</a></li>
+                            <li><a href="?fundId=小袋理财">小袋理财</a></li>
+                            <li><a href="?fundId=爱多贷">爱多贷</a></li>
+                            <li><a href="?fundId=拿点花">拿点花</a></li>
+                            <li><a href="?fundId=付呗零用钱">付呗零用钱</a></li>
+                            <li><a href="?fundId=星火钱包">星火钱包</a></li>
+                            <li><a href="?fundId=钱好借">钱好借</a></li>
+                            <li><a href="?fundId=速融超">速融超</a></li>
+                            <li><a href="?fundId=有钱来了">有钱来了</a></li>
+                            <li><a href="?fundId=马上有钱">马上有钱</a></li>
+                            <li><a href="?fundId=借袋钱">借袋钱</a></li>
+                            <li><a href="?fundId=点点花">点点花</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <i class="fa fa-bar-chart-o fa-fw"></i> 逾期率曲线
+                        </div>
+                        <div class="panel-body">
+                            <div id="main" style="width: 100%;height: 420px;"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <i class="fa fa-bar-chart-o fa-fw"></i> 逾期率情况数据
+                        </div>
+                        <div class="panel-body">
+                            <div id="data" style="width: 100%;height: 570px;"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script src="../static/js/echarts.min.js"></script>
+        <script src="../static/js/jquery-3.2.1.min.js"></script>
+        <script src="../static/js/flowDelayRateFund.js"></script>
+        <style type="text/css">
+            .table{
+                width: 100%;
+                border-collapse:collapse; 
+                border-spacing:0; 
+            }
+            .fixedThead{
+                display: block;
+                width: 100%;
+                background-color: #337ab7;
+                color: #fff;
+                border-bottom-width: 0;
+            }
+            .scrollTbody{
+                display: block;
+                height: 500px;
+                overflow: auto;
+                width: 100%;
+            }
+            .table td,.table th {
+                width: 200px;
+                border-bottom: none;
+                border-left: none;
+                padding: 2px 3px 3px 4px;
+                font-size: 12px;
+                font-family: Verdana;
+                font-weight: bold;
+                text-align: center;
+            }
+            .table tr{
+                width: 100%;
+                border-left: 1px solid #EB8;
+                border-bottom: 1px solid #B74;
+            }
+        </style>
+{% endblock %}

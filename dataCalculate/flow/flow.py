@@ -170,7 +170,7 @@ def actRepayment():
 		print '应还实还数据更新：' + stTime
 		sql = """
 			select sum(repayMoney) from loan_repaying
-			where termDate='{}' and compatibleStatus not in ('UNPAID','CANCEL')
+			where termDate='{}' and compatibleStatus not in ('CANCEL')
 		""".format(stTime)
 		data = pysql.dbInfo(sql)
 		data = data.fillna(0)
@@ -178,7 +178,7 @@ def actRepayment():
 
 		sql = """
 			select sum(repayMoney) from loan_repaying
-			where termDate='{}' and compatibleStatus not in ('UNPAID','CANCEL') 
+			where termDate='{}' and compatibleStatus not in ('CANCEL') 
 			and repaidTime is not null and DATE_FORMAT(termDate,'%Y-%m-%d') >= DATE_FORMAT(repaidTime,'%Y-%m-%d')
 		""".format(stTime)
 		data = pysql.dbInfo(sql)

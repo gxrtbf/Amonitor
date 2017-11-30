@@ -1,5 +1,5 @@
 $(document).ready(function(){
-    $.get("../api/index?format=json&table=aeyepassrate&content=list",function(dataset){
+    $.get("../api/v1/day?format=json&table=aeyepassrate&content=list",function(dataset){
         console.log(dataset);
 
         var myChart = echarts.init(document.getElementById('trend'));
@@ -25,14 +25,6 @@ $(document).ready(function(){
                     crossStyle: {
                         color: '#999'
                     }
-                }
-            },
-            toolbox: {
-                feature: {
-                    dataView: {show: true, readOnly: false},
-                    magicType: {show: true, type: ['line', 'bar']},
-                    restore: {show: true},
-                    saveAsImage: {show: true}
                 }
             },
             legend: {

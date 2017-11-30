@@ -106,7 +106,15 @@
                                     <a href="{% url 'income' %}"> 营业收入（修改中）</a>
                                 </li>
                                 <li>
-                                    <a href="{% url 'delayRateFund' %}"> 逾期率</a>
+                                    <a href="{% url 'delayRateFund' %}"> 资金方业务<span class="fa arrow"></span></a>
+                                        <ul class="nav nav-third-level">
+                                            <li>
+                                                <a href="{% url 'loanFund' %}"> 贷款金额</a>
+                                            </li>
+                                            <li>
+                                                <a href="{% url 'delayRateFund' %}"> 逾期率</a>
+                                            </li>
+                                        </ul>
                                 </li>
                             </ul>
 						</li>
@@ -116,13 +124,13 @@
                             <a href="{% url 'aeyepassrate' %}"><i class="fa fa-key fa-fw"></i> 风险监控<span class="fa arrow"></span></a>
 							<ul class="nav nav-second-level">
                                 <li>
-                                    <a href="{% url 'aeyepassrate' %}">通过率</a>
+                                    <a href="{% url 'aeyepassrate' %}"> 通过率</a>
                                 </li>
                                 <li>
-                                    <a href="{% url 'aeyedelayday' %}">逾期率</a>
+                                    <a href="{% url 'aeyedelayday' %}"> 逾期率</a>
                                 </li>
                                 <li>
-                                    <a href="{% url 'aeyegetrate' %}">取现率</a>
+                                    <a href="{% url 'aeyegetrate' %}"> 取现率</a>
                                 </li>
                             </ul>
 						</li>
@@ -132,7 +140,7 @@
                             <a href="{% url 'financetodayloan' %}"><i class="glyphicon glyphicon-yen"></i> 财务<span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level">
                                 <li>
-                                    <a href="{% url 'financetodayloan' %}">今日资金贷出情况</a>
+                                    <a href="{% url 'financetodayloan' %}"> 今日资金贷出情况</a>
                                 </li>
                                 <li>
                                     <a href="{% url 'financetodayloan' %}">待添加<span class="fa arrow"></span></a>

@@ -1,6 +1,6 @@
 $(document).ready(function(){
 
-    $.get("../api/index?format=json&table=collectdis&content=list",function(dataset){
+    $.get("../api/v1/day?format=json&table=collectdis&content=list",function(dataset){
 
         var currentNum = [];
         var currentNumDis1 = [];
@@ -311,7 +311,7 @@ $(document).ready(function(){
         };
         myChart.setOption(option);
     });
-    $.get("../api/index?format=json&table=collectdis&content=item",function(dataset){
+    $.get("../api/v1/day?format=json&table=collectdis&content=item",function(dataset){
         var myChart = echarts.init(document.getElementById('collectDis'));
         option = {
             title : {
@@ -356,7 +356,7 @@ $(document).ready(function(){
         };
         myChart.setOption(option);
 
-    $.get("../api/index?format=json&table=collectnum&content=list",function(dataset){
+    $.get("../api/v1/day?format=json&table=collectnum&content=list",function(dataset){
         console.log(dataset)
         var yesterdayNew = [];
         var yesterdayPaid300 = [];

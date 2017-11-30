@@ -1,5 +1,5 @@
 $(document).ready(function(){
-    $.get("../api/index?format=json&table=usersex&content=list",function(dataset){
+    $.get("../api/v1/day?format=json&table=usersex&content=list",function(dataset){
         var male = [];
         var female = [];
         var times = [];
@@ -108,7 +108,7 @@ $(document).ready(function(){
         };
         myChart.setOption(option);
     });
-    $.get("../api/index?format=json&table=usersexall&content=item",function(dataset){
+    $.get("../api/v1/day?format=json&table=usersexall&content=item",function(dataset){
         var myChart = echarts.init(document.getElementById('loudou'));
         option = {
             title : {

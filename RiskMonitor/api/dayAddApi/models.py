@@ -163,6 +163,16 @@ class FlowDelayRateNO(models.Model):
 
 	unique_together = ('fundName', 'createDate')
 
+class FlowLoanFund(models.Model):
+	fundName = models.CharField(max_length=128,default='credan')
+	sumMoney = models.FloatField(default=0.0)
+	createDate = models.DateField(default=timezone.now)
+
+	class Meta:
+		ordering = ('createDate',)
+
+	unique_together = ('fundName', 'createDate')
+
 #collect
 
 class CollectRate(models.Model):

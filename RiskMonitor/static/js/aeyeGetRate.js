@@ -1,5 +1,5 @@
 $(document).ready(function(){
-    $.get("../api/index?format=json&table=aeyegetrate&content=list",function(dataset){
+    $.get("../api/v1/day?format=json&table=aeyegetrate&content=list",function(dataset){
         console.log(dataset);
 
         var myChart = echarts.init(document.getElementById('trend'));
@@ -25,14 +25,6 @@ $(document).ready(function(){
                     crossStyle: {
                         color: '#999'
                     }
-                }
-            },
-            toolbox: {
-                feature: {
-                    dataView: {show: true, readOnly: false},
-                    magicType: {show: true, type: ['line', 'bar']},
-                    restore: {show: true},
-                    saveAsImage: {show: true}
                 }
             },
             legend: {
@@ -117,7 +109,7 @@ $(document).ready(function(){
                     type:'line',
                     data:tryNum,
                     itemStyle:{  
-                        normal:{color:'blue'}  
+                        normal:{color:'#f0ad4e'}  
                     } 
                 },
                 {
@@ -125,7 +117,7 @@ $(document).ready(function(){
                     type:'line',
                     data:sucNum,
                     itemStyle:{  
-                        normal:{color:'green'}  
+                        normal:{color:'#337ab7'}  
                     } 
                 },
                 {
@@ -134,7 +126,7 @@ $(document).ready(function(){
                     yAxisIndex: 1,
                     data:sucRate,
                     itemStyle:{  
-                        normal:{color:'#f0ad4e'}  
+                        normal:{color:'#5cb85c'}  
                     } 
                 }
             ]

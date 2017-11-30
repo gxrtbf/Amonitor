@@ -20,5 +20,9 @@ def flowIncome_view(request):
     return render(request,'flow/flowIncome.html')
 
 @permission_required('part_admin.businessPage')
-def flowDelayRate_view(request):
-    return render(request,'flow/flowDelayRate.html')
+def flowDelayRateFund_view(request):
+    return render(request,'flow/flowDelayRateFund.html')
+
+@permission_required('part_admin.businessPage')
+def flowLoanFund_view(request):
+    return render(request,'flow/flowLoanFund.html')

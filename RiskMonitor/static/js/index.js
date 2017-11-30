@@ -4,13 +4,13 @@ $(document).ready(function(){
       parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");  
       return parts.join(".");  
     };
-    $.get("../api/index?format=json&table=indexhead&content=item",function(dataset){
+    $.get("../api/v1/day?format=json&table=indexhead&content=item",function(dataset){
         document.getElementById("sumUser").innerHTML = formatNumberRgx(dataset[0]["sumUser"]);
         document.getElementById("activeUser").innerHTML = formatNumberRgx(dataset[0]["activeUser"]);
         document.getElementById("tradeNum").innerHTML = formatNumberRgx(dataset[0]["tradeNum"]);
         document.getElementById("tradeMoney").innerHTML = formatNumberRgx(dataset[0]["tradeMoney"]);
     });
-    $.get("../api/index?format=json&table=indexdash&content=item",function(dataset){
+    $.get("../api/v1/day?format=json&table=indexdash&content=item",function(dataset){
         var myChart = echarts.init(document.getElementById('dashbook3'));
         var option = {
             title: {
@@ -165,7 +165,7 @@ $(document).ready(function(){
         };
         myChart.setOption(option);
     });
-    $.get("../api/index?format=json&table=indexhopper&content=item",function(dataset){
+    $.get("../api/v1/day?format=json&table=indexhopper&content=item",function(dataset){
         var percent = new Array();
         for(var key in dataset[0]){
             percent[key] = (dataset[0][key]/(dataset[0]['register'])*100).toFixed(2)
@@ -242,7 +242,7 @@ $(document).ready(function(){
         };
         myChart.setOption(option);
     });
-    $.getJSON("../api/index?format=json&table=indexacrepay&content=list",function(dataset){
+    $.getJSON("../api/v1/day?format=json&table=indexacrepay&content=list",function(dataset){
         console.log(dataset);
         var acRepayMoney = [];
         var noRepayMoney = [];
@@ -362,7 +362,7 @@ $(document).ready(function(){
         myChart.setOption(option);
     });
 
-    $.getJSON("../api/index/?format=json&table=indexcity&content=item",function(dataset){
+    $.getJSON("../api/v1/day?format=json&table=indexcity&content=item",function(dataset){
         var city = new Array();
         for(i=0;i<dataset.length;i++){
             city[dataset[i]['cityName']] = dataset[i]['numInCity']

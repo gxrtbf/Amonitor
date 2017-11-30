@@ -62,7 +62,7 @@ def passRateloan():
 				where a.user_id=b.userSid and a.product_id = b.productId 
 				and a.audit_date >= '{}' and a.audit_date < '{}' 
 				and b.createdTime > '{}'
-				and a.status in ('SUCCESS','FA_SUCCESS') and b.status=6;
+				and a.status in ('SUCCESS') and b.status=6;
 			""".format(stTime,edTime1,stTime)
 			data = pysql.dbInfo(sql)
 			data = data.fillna(0)
@@ -76,7 +76,7 @@ def passRateloan():
 			data = data.fillna(0)
 			applyPass = data.values[0][0]
 			#当前 申请提现成功率
-			paidRate = round(paidNum/float(applyPass*100),2) if paidNum > 2 else 0
+			paidRate = round(paidNum/float(applyPass)*100,2) if paidNum > 2 else 0
 			#存储数据
 			sql = """ 
 				update dayAddApi_marketnum 

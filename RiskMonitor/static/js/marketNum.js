@@ -1,5 +1,5 @@
 $(document).ready(function(){
-    $.get("../api/index?format=json&table=marketnum&content=list",function(dataset){
+    $.get("../api/v1/day?format=json&table=marketnum&content=list",function(dataset){
         console.log(dataset);
 
         var applyPass = [];

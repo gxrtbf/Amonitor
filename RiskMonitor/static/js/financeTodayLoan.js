@@ -1,5 +1,5 @@
 $(document).ready(function(){
-    $.get("../api/actime/?format=json&table=finance&content=list",function(dataset){
+    $.get("../api/v1/actime/?format=json&table=finance&content=list",function(dataset){
         console.log(dataset);
         document.getElementById("header1").innerHTML = '今日已贷总金额：' + dataset.todayLoan["paidAll"] + ' ¥ ';
         html_result = ''
@@ -55,9 +55,10 @@ $(document).ready(function(){
             },
             xAxis: [{
                 type: 'category',
-                boundaryGap: false,
-                axisPointer: {
-                    type: 'shadow'
+                axisLine: {
+                    lineStyle: {
+                        color: '#57617B'
+                    }
                 },
                 data: dataset['hours']
             }],
@@ -131,7 +132,6 @@ $(document).ready(function(){
             },
             xAxis: [{
                 type: 'category',
-                boundaryGap: false,
                 axisPointer: {
                     type: 'shadow'
                 },

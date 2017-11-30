@@ -1,5 +1,5 @@
 $(document).ready(function(){
-    $.get("../api/index?format=json&table=flowloanmoneyno&content=list",function(dataset){
+    $.get("../api/v1/day?format=json&table=flowloanmoneyno&content=list",function(dataset){
         var myChart = echarts.init(document.getElementById('loanNO'));
         var loanNew = [];
         var loanOld = [];
@@ -87,7 +87,7 @@ $(document).ready(function(){
         };
         myChart.setOption(option);
     });
-    $.get("../api/index?format=json&table=flowloanmoneysum&content=item",function(dataset){
+    $.get("../api/v1/day?format=json&table=flowloanmoneysum&content=item",function(dataset){
         var product = [];
         var money = [];
         for(i=0;i<dataset.length;i++)
@@ -146,7 +146,7 @@ $(document).ready(function(){
         };
         myChart.setOption(option);
     });
-    $.get("../api/index?format=json&table=flowloanmoney&content=item",function(dataset){
+    $.get("../api/v1/day?format=json&table=flowloanmoney&content=item",function(dataset){
         var myChart = echarts.init(document.getElementById('sumLoanMoneyT'));
         var product = [];
         var money = [];

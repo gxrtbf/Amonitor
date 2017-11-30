@@ -1,5 +1,5 @@
 $(document).ready(function(){
-    $.get("../api/index?format=json&table=collectrate&content=list",function(dataset){
+    $.get("../api/v1/day?format=json&table=collectrate&content=list",function(dataset){
         var day4rate = [];
         var day7rate = [];
         var day15rate = [];

@@ -169,7 +169,7 @@ def delayDay():
 	#逾期情况 not in (3,4,5,6,1001)
 	sql = """
 		select DATE_FORMAT(b.termDate,'%Y-%m-%d') 'date',sum(b.repayMoney) 'allMoney' from loan a,loan_repaying b 
-		where a.id=b.loanId and a.status=6 and b.compatibleStatus not in ('UNPAID','CANCEL') and b.productId not in (3,4,5,6,1001)
+		where a.id=b.loanId and a.status=6 and b.compatibleStatus not in ('CANCEL') and b.productId not in (3,4,5,6,1001)
 		and b.termDate < DATE_FORMAT(now(),'%Y-%m-%d')
 		GROUP BY DATE_FORMAT(b.termDate,'%Y-%m-%d');
 	"""
@@ -180,7 +180,7 @@ def delayDay():
 		sql = """
 			select DATE_FORMAT(c.termDate,'%Y-%m-%d') 'date',sum(c.repayMoney) 'payMoney' from (
 			select a.payMoney,b.* from loan a,loan_repaying b 
-			where a.id=b.loanId and a.status=6 and b.compatibleStatus not in ('UNPAID','CANCEL') and b.productId not in (3,4,5,6,1001)
+			where a.id=b.loanId and a.status=6 and b.compatibleStatus not in ('CANCEL') and b.productId not in (3,4,5,6,1001)
 			and b.termDate < DATE_FORMAT(now(),'%Y-%m-%d')
 			HAVING if(b.repaidTime is NULL,TO_DAYS(now()) - TO_DAYS(b.termDate),TO_DAYS(b.repaidTime) - TO_DAYS(b.termDate)) <= {}) c
 			GROUP BY DATE_FORMAT(c.termDate,'%Y-%m-%d');
@@ -238,7 +238,7 @@ def delayDayNO():
 		sql = """
 			select sum(a.repayMoney)
 			from loan a,loan_repaying b 
-			where a.id=b.loanId and a.status=6 and b.compatibleStatus not in ('UNPAID','CANCEL') and b.productId not in (3,4,5,6,1001)
+			where a.id=b.loanId and a.status=6 and b.compatibleStatus not in ('CANCEL') and b.productId not in (3,4,5,6,1001)
 			and b.termDate >= '{}' and b.termDate < '{}'
 			and a.userSid not in (select distinct userSid from loan_repaying where termDate < '{}')
 		""".format(stTime,edTime,stTime)
@@ -249,7 +249,7 @@ def delayDayNO():
 		sql = """
 			select sum(a.repayMoney)
 			from loan a,loan_repaying b 
-			where a.id=b.loanId and a.status=6 and b.compatibleStatus not in ('UNPAID','CANCEL') and b.productId not in (3,4,5,6,1001)
+			where a.id=b.loanId and a.status=6 and b.compatibleStatus not in ('CANCEL') and b.productId not in (3,4,5,6,1001)
 			and b.termDate >= '{}' and b.termDate < '{}' 
 			and if(b.repaidTime is NULL,TO_DAYS(now()) - TO_DAYS(b.termDate),TO_DAYS(b.repaidTime) - TO_DAYS(b.termDate)) <= 3
 			and a.userSid not in (
@@ -264,7 +264,7 @@ def delayDayNO():
 		sql = """
 			select sum(a.repayMoney)
 			from loan a,loan_repaying b 
-			where a.id=b.loanId and a.status=6 and b.compatibleStatus not in ('UNPAID','CANCEL') and b.productId not in (3,4,5,6,1001)
+			where a.id=b.loanId and a.status=6 and b.compatibleStatus not in ('CANCEL') and b.productId not in (3,4,5,6,1001)
 			and b.termDate >= '{}' and b.termDate < '{}' 
 			and a.userSid in (
 			select distinct userSid from loan_repaying where termDate < '{}'
@@ -276,7 +276,7 @@ def delayDayNO():
 		sql = """
 			select sum(a.repayMoney)
 			from loan a,loan_repaying b 
-			where a.id=b.loanId and a.status=6 and b.compatibleStatus not in ('UNPAID','CANCEL') and b.productId not in (3,4,5,6,1001)
+			where a.id=b.loanId and a.status=6 and b.compatibleStatus not in ('CANCEL') and b.productId not in (3,4,5,6,1001)
 			and b.termDate >= '{}' and b.termDate < '{}' 
 			and if(b.repaidTime is NULL,TO_DAYS(now()) - TO_DAYS(b.termDate),TO_DAYS(b.repaidTime) - TO_DAYS(b.termDate)) <= 3
 			and a.userSid in (

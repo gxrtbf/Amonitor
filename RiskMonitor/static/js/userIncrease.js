@@ -1,5 +1,5 @@
 $(document).ready(function(){
-    $.get("../api/index?format=json&table=userincrease&content=list",function(dataset){
+    $.get("../api/v1/day?format=json&table=userincrease&content=list",function(dataset){
         var allow = [];
         var newApply = [];
         var oldApply = [];
