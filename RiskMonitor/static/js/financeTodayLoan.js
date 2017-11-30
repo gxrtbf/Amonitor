@@ -17,7 +17,7 @@ $(document).ready(function(){
         document.getElementById('content').innerHTML=html_result;
 
     });
-    $.get("../api/actime/?format=json&table=finance&content=item",function(dataset){
+    $.get("../api/v1/actime/?format=json&table=finance&content=item",function(dataset){
         var myChart = echarts.init(document.getElementById('main'));
         var option = {
             title: {
