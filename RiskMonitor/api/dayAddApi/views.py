@@ -132,7 +132,7 @@ tableModel = {
 import datetime
 from django.db.models import Max
 
-#@permission_required('part_admin.financePage')
+@permission_required('part_admin.dayapi')
 @api_view(['GET'])
 def indexhead_item(request):
     if request.method == 'GET':

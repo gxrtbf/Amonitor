@@ -11,7 +11,7 @@ from django.contrib.auth.decorators import permission_required
 
 from actualCal.finance import finance
 
-#@permission_required('part_admin.financePage')
+@permission_required('part_admin.dayapi')
 @api_view(['GET'])
 def actime_item(request):
 	if request.method == 'GET':

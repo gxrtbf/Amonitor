@@ -117,7 +117,7 @@ def delayDayNOFund():
 			if stTime in tmwait:
 				continue
 
-			print '逾期(新老)3天逾期率' + fundName + ' ' + stTime
+			print u'逾期(新老)3天逾期率' + fundName + ' ' + stTime
 
 			#分新老首逾情况
 			#new

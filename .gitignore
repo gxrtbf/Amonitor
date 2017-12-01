@@ -5,3 +5,4 @@ pysql.py
 
 static/data/*
 *.log
+*.log
