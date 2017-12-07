@@ -3,11 +3,10 @@
 import MySQLdb
 import pandas as pd
 import numpy as np
-import json
 import sys
 import os
-import logging
 import datetime
+import dateutil
 
 #添加路径
 sys.path.insert(0,os.path.abspath(os.path.dirname(os.path.dirname(__file__))))
@@ -31,6 +30,19 @@ def timeScale(startTime = "2017-03-01"):
 		timeList.insert(0,endTime)
 		if endTime == startTime:
 			break
+		i = i + 1
+	return timeList
+
+#数据包含时间 month
+def timeScaleMonth(startTime = "2017-03-01"):
+	nowTime = datetime.date.today()
+	i = 0
+	timeList = []
+	while True:
+		endTime = str(nowTime-dateutil.relativedelta.relativedelta(months=i))
+		if endTime < startTime:
+			break
+		timeList.insert(0,endTime[:7])
 		i = i + 1
 	return timeList
 
@@ -143,9 +155,77 @@ def userAge():
 		status = pysql.insertData(sql,dset)
 		log.log('用户年龄（日）更新状态-{}！({})'.format(status,stTime),'info')
 
+def userRest():
+
+	timeList = timeScaleMonth()
+	sql = 'select distinct createDate from dayAddApi_userrest'
+	tmRest = pysql.dbInfoLocal(sql)
+	tmRest = tmRest.fillna(0)
+
+	tmwait = []
+	if not tmRest.empty:
+		tmwait = [str(x)[:7] for x in tmRest['createDate']]
+
+	for i in range(len(timeList)-1):
+		stTime = timeList[i]
+		edTime = timeList[i+1]
+
+		if stTime in tmwait:
+			continue
+
+		print u'留存' + stTime
+		sql = """
+			select DATE_FORMAT(a.audit_date,'%Y-%m') 'month',count(distinct a.user_id) 'allrest' from (
+			select c.user_id,c.audit_date from ci_cash_apply_info c left join user u
+			on c.user_id=u.id
+			where c.status='SUCCESS' and u.date_created > '{}' and u.date_created < '{}'
+			) a
+			where a.audit_date = (
+			select min(b.audit_date) from ci_cash_apply_info b where a.user_id=b.user_id and b.status='SUCCESS' and b.create_time > '{}'
+			)
+			group by DATE_FORMAT(a.audit_date,'%Y-%m')
+		""".format(stTime + '-01',edTime + '-01',stTime + '-01')
+		allrest = pysql.dbInfo(sql)
+		allrest = allrest.fillna(0)
+
+		sql = """
+			select DATE_FORMAT(a.createdTime,'%Y-%m') 'month',count(distinct a.userSid) 'currentactive' from (
+			select l.userSid,l.createdTime from loan l left join user u
+			on l.userSid=u.id
+			where l.status=6 and u.date_created > '{}' and u.date_created < '{}' ) a 
+			group by DATE_FORMAT(a.createdTime,'%Y-%m')
+		""".format(stTime + '-01',edTime + '-01')
+		cactive = pysql.dbInfo(sql)
+		cactive = cactive.fillna(0)
+
+		aad = pd.merge(allrest,cactive,how='outer')
+		aad = aad.fillna(0)
+		aad['allrest'] = [sum(aad['allrest'][:(i+1)]) for i in range(len(aad))]
+		aad['rtime'] = stTime
+		aad['activerate'] = aad['currentactive']/aad['allrest']*100
+		aad['createdTime'] = str(datetime.datetime.now())[:10]
+
+		rtime = list(aad['rtime'])
+		cmonth = list(aad['month'])
+		allrest = list(aad['allrest'])
+		currentactive = list(aad['currentactive'])
+		currentActiveRate = list(aad['activerate'])
+		ctime = list(aad['createdTime'])
+
+		sql = "delete from dayAddApi_userrest where registerDate='{}'".format(stTime)
+		status = pysql.deletetData(sql)
+		log.log(u'留存数据删除状态-{}！'.format(status),'info')
+
+		sql = """ insert into dayAddApi_userrest(registerDate,currentDate,allPass,currentActive,currentActiveRate,createDate) values (%s,%s,%s,%s,%s,%s) """
+		dset = zip(rtime,cmonth,allrest,currentactive,currentActiveRate,ctime)
+		status = pysql.insertData(sql,dset)
+		log.log('留存数据更新状态-{}！({})'.format(status,stTime),'info')
+
+
 def main():
 	userSex()
 	userAge()
+	userRest()
 
 if __name__ == '__main__':
 	main()

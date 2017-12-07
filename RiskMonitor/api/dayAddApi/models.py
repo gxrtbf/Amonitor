@@ -102,6 +102,19 @@ class UserIncrease(models.Model):
 	class Meta:
 		ordering = ('createDate',)
 
+class UserRest(models.Model):
+	registerDate = models.CharField(max_length=32,default='2017-12')
+	currentDate = models.CharField(max_length=32,default='2017-12')
+	allPass = models.IntegerField(default=0)
+	currentActive = models.IntegerField(default=0)
+	currentActiveRate = models.FloatField(default=0.0)
+	createDate = models.DateField(default=timezone.now)
+
+	class Meta:
+		ordering = ('registerDate', 'currentDate',)
+
+	unique_together = ('registerDate', 'currentDate')
+
 #flow
 class FlowLoanMoney(models.Model):
 	product = models.CharField(max_length=32,default='flash')

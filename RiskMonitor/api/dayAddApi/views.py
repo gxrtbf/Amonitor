@@ -10,8 +10,8 @@ from models import IndexHead,IndexDash,IndexHopper,IndexCity,IndexAcrepay
 from serializers import IndexHeadSerializer,IndexDashSerializer,IndexHopperSerializer,IndexCitySerializer,IndexAcrepaySerializer
 
 #userInfo
-from models import UserAge,UserAgeAll,UserSex,UserSexAll,UserIncrease
-from serializers import UserAgeSerializer,UserAgeAllSerializer,UserSexSerializer,UserSexAllSerializer,UserIncreaseSerializer
+from models import UserAge,UserAgeAll,UserSex,UserSexAll,UserIncrease,UserRest
+from serializers import UserAgeSerializer,UserAgeAllSerializer,UserSexSerializer,UserSexAllSerializer,UserIncreaseSerializer,UserRestSerializer
 
 #flow
 from models import FlowLoanMoney,FlowLoanMoneyNO,FlowLoanMoneySum,FlowDelayRate,FlowDelayRateNO,FlowLoanFund
@@ -70,6 +70,10 @@ tableModel = {
 	'userincrease': {
 			'models': UserIncrease,
 			'serializers': UserIncreaseSerializer,
+	},
+	'userrest': {
+			'models': UserRest,
+			'serializers': UserRestSerializer,
 	},
 	'flowloanmoney': {
 			'models': FlowLoanMoney,
@@ -144,6 +148,12 @@ def indexhead_item(request):
     		fundName = request.GET.get('fundName',None)
     		if fundName:
     			temp = objectModel.objects.filter(fundName=fundName)
+    			serializer = objectSerializer(temp, many=True)
+    			return Response(serializer.data)
+
+    		registerDate = request.GET.get('registerDate',None)
+    		if registerDate:
+    			temp = objectModel.objects.filter(registerDate=registerDate)
     			serializer = objectSerializer(temp, many=True)
     			return Response(serializer.data)
 

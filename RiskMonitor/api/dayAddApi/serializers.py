@@ -30,7 +30,7 @@ class IndexAcrepaySerializer(serializers.ModelSerializer):
 
 
 #userInfo
-from models import UserAge,UserAgeAll,UserSex,UserSexAll,UserIncrease
+from models import UserAge,UserAgeAll,UserSex,UserSexAll,UserIncrease,UserRest
 
 class UserAgeSerializer(serializers.ModelSerializer):
     class Meta:
@@ -56,6 +56,11 @@ class UserIncreaseSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserIncrease
         fields = ('register', 'allow', 'newApply', 'oldApply', 'createDate')
+
+class UserRestSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = UserRest
+        fields = ('registerDate', 'currentDate', 'allPass', 'currentActive', 'currentActiveRate', 'createDate')
 
 
 #flow

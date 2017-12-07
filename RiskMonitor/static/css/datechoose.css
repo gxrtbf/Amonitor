@@ -1,0 +1,13 @@
+.clear{display:block; clear:both;}
+.clearfix:after{content:"."; display:block; height:0; clear:both;visibility:hidden;}
+.choosebox li a{color:#333;text-decoration:none;}
+.choosebox li a:hover{color:#990000;text-decoration:underline;}
+/* choose */
+.choose{width:90%;margin:10px auto 10px 100px;border:solid 1px #ddd;padding:15px 30px 30px 30px;}
+.year{height:24px;margin:10px auto 5px auto;font-size:16px;}
+.month{height:24px;margin:10px auto 5px auto;font-size:16px;}
+.choosebox{margin:10px auto 5px 50px;}
+.choosebox li{float:left;margin-right:10px;display:inline;}
+.choosebox li a{float:left;background:#fff;font-size:14px;border:1px solid #ccc;height:24px;line-height:14px;padding:4px 12px; display:block;}
+.choosebox li a.current{background:url(../pic/right-icon.gif) no-repeat 100% 100%;border:1px solid #A10000;}
+.choosebox li input{display:none;}

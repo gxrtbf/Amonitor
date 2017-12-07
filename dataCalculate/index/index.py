@@ -168,6 +168,7 @@ def dashbook():
 			on a.loanId = b.id
 			where DateDiff(a.createdTime,now())=-1"""
 	data = pysql.dbInfo(sql)
+	data = data.fillna(0)
 	avgMoney = round(data.values[0][0],2)
 
 	sql = """
@@ -176,6 +177,7 @@ def dashbook():
 		where DateDiff(a.createdTime,now())=-1
 	"""
 	data = pysql.dbInfo(sql)
+	data = data.fillna(0)
 	avgTermNum = round(data.values[0][0],2)
 
 	sql = """
@@ -184,6 +186,7 @@ def dashbook():
 		where DateDiff(a.createdTime,now())=-1
 	"""
 	data = pysql.dbInfo(sql)
+	data = data.fillna(0)
 	avgServiceMoney = round(data.values[0][0],2)
 
 	sql = """ insert into dayAddApi_indexdash(avgTermNum,avgMoney,avgServiceMoney,createDate) values (%s,%s,%s,%s) """
