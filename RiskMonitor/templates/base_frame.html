@@ -89,7 +89,15 @@
                                     <a href="{% url 'age' %}">用户年龄</a>
                                 </li>
                                 <li>
-                                    <a href="{% url 'rest' %}">用户留存</a>
+                                    <a href="{% url 'rest' %}"> 用户留存<span class="fa arrow"></span></a>
+                                        <ul class="nav nav-third-level">
+                                            <li>
+                                                <a href="{% url 'restall' %}"> 总体比较</a>
+                                            </li>
+                                            <li>
+                                                <a href="{% url 'rest' %}"> 每月留存</a>
+                                            </li>
+                                        </ul>
                                 </li>
                             </ul>
                             <!-- /.nav-second-level -->
@@ -200,6 +208,11 @@
     <script src="../static/js/bootstrap.min.js"></script>
     <script src="../static/js/metisMenu.min.js"></script>
     <script src="../static/js/admin.js"></script>
+    <script>
+        $.ajaxSetup({
+            data: {csrfmiddlewaretoken: '{{ csrf_token }}' },
+        });
+    </script>
 
 </body>
 

@@ -19,9 +19,14 @@ def userInfoAge_view(request):
     return render(request,'userInfo/userAge.html')
 
 @permission_required('part_admin.userPage')
+def userInfoLocation_view(request):
+    return render(request,'userInfo/userLocation.html')
+
+@permission_required('part_admin.userPage')
 def userRest_view(request):
     return render(request,'userInfo/userRest.html')
 
 @permission_required('part_admin.userPage')
-def userInfoLocation_view(request):
-    return render(request,'userInfo/userLocation.html')
+def userRestAll_view(request):
+    return render(request,'userInfo/userRestAll.html')
+

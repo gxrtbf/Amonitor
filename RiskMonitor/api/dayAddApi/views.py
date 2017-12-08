@@ -137,36 +137,43 @@ import datetime
 from django.db.models import Max
 
 @permission_required('part_admin.dayapi')
-@api_view(['GET'])
+@api_view(['POST'])
 def indexhead_item(request):
-    if request.method == 'GET':
-    	tables = request.GET.get('table',None)
-    	if tables:
+    if request.method == 'POST':
+
+    	paralist = eval(request.POST.get('para',None))
+    	tables = paralist.get('table',None)
+    	content = paralist.get('content',None)
+    	
+    	if tables and content:
+
     		objectModel = tableModel[tables]['models']
     		objectSerializer = tableModel[tables]['serializers']
 
-    		fundName = request.GET.get('fundName',None)
-    		if fundName:
-    			temp = objectModel.objects.filter(fundName=fundName)
-    			serializer = objectSerializer(temp, many=True)
-    			return Response(serializer.data)
-
-    		registerDate = request.GET.get('registerDate',None)
-    		if registerDate:
-    			temp = objectModel.objects.filter(registerDate=registerDate)
-    			serializer = objectSerializer(temp, many=True)
-    			return Response(serializer.data)
-
-    		content = request.GET.get('content',None)
-    		if content == 'item':
-    			#yesterday = str(datetime.datetime.now() - datetime.timedelta(days=1))[:10]
-    			yesterday = str(objectModel.objects.all().aggregate(Max('createDate')).values()[0])[:10]
-    			temp = objectModel.objects.filter(createDate=yesterday)
-    			serializer = objectSerializer(temp, many=True)
-    			return Response(serializer.data)
-    		elif content == 'list':
+    		para = paralist.get('para',[])
+    		if para:
     			temp = objectModel.objects.all()
+    			filterstrtemp = "temp.filter({}{}='{}')"
+    			for xkey in para:
+    				key = xkey.get('key','')
+    				value = xkey.get('value','')
+    				way = xkey.get('way','')
+    				way = '__' + way if way else ''
+    				filterstr = filterstrtemp.format(key,way,value)
+    				temp = eval(filterstr)
     			serializer = objectSerializer(temp, many=True)
+
     			return Response(serializer.data)
+    		else:
+    			if content == 'item':
+	    			#yesterday = str(datetime.datetime.now() - datetime.timedelta(days=1))[:10]
+	    			yesterday = str(objectModel.objects.all().aggregate(Max('createDate')).values()[0])[:10]
+	    			temp = objectModel.objects.filter(createDate=yesterday)
+	    			serializer = objectSerializer(temp, many=True)
+	    			return Response(serializer.data)
+	    		elif content == 'list':
+	    			temp = objectModel.objects.all()
+	    			serializer = objectSerializer(temp, many=True)
+	    			return Response(serializer.data)
 
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

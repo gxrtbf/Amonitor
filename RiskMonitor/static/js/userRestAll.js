@@ -1,24 +1,12 @@
 $(document).ready(function(){
-    reflashdata()
-});
-
-function reflashdata() {
-
-    var year = document.getElementById("year_span").innerText;
-    var month = document.getElementById("month_span").innerText;
-
-    var sdate = year +'-'+ month;
-
-    var charttitle =  '用户留存情况(' + year + '.' + month + '注册)'
-
     var cdata = {
         'table': "userrest",
         'content': "list",
         'para': [
             {
                 'key': "registerDate",
-                'value': sdate,
-                'way': ""
+                'value': "2017-09",
+                'way': "gte"
             }
         ]
     };
@@ -45,7 +33,7 @@ function reflashdata() {
             var myChart = echarts.init(document.getElementById('main'));
             var option = {
                 title : {
-                    text: charttitle,
+                    text: '用户留存比较',
                 },
                 tooltip: {
                     trigger: 'axis',
@@ -163,60 +151,7 @@ function reflashdata() {
                 ]
             };
             myChart.setOption(option);
-
-            html_result = '' + 
-            '<table class="table" style="width: 100%;margin:0 auto;"> '+
-                '<thead class="fixedThead" style="width: 100%"> '+
-                    '<tr style="margin:0 auto;"><th>月份</th><th>总通过人数</th><th>活跃人数</th><th>活跃率</th>' +
-                '</thead> '+
-            '<tbody class="scrollTbody" style="width: 100%;"> '
-            lnum = times.length
-            for (var i = 1; i <= lnum; i++)
-            {
-                html_result += '<tr>';
-                html_result += '<td>'+times[lnum-i]+'</td>';
-                html_result += '<td>'+allPass[lnum-i]+'</td>';
-                html_result += '<td>'+currentActive[lnum-i]+'</td>';
-                html_result += '<td>'+currentActiveRate[lnum-i]+'%</td>';
-                html_result += '</tr>';
-            }
-            html_result += '</tbody> </table> '
-            document.getElementById('data').innerHTML=html_result;
         }
-    }); 
-};
-
-$(function(){   
-    $('#year li a').click(function(){
-        var thisToggle = $(this).is('.sizeyear') ? $(this) : $(this).prev();
-        var checkBox = thisToggle.prev();
-        checkBox.trigger('click');
-        $('.sizeyear').removeClass('current');
-        thisToggle.addClass('current');
-        return false;
-    }); 
-    $('#month li a').click(function(){
-        var thisToggle = $(this).is('.sizemonth') ? $(this) : $(this).prev();
-        var checkBox = thisToggle.prev();
-        checkBox.trigger('click');
-        $('.sizemonth').removeClass('current');
-        thisToggle.addClass('current');
-        return false;
-    }); 
+    });
 });
-$("#year li a").click(function(){
-    var text = $(this).html();
-    $(".year span").html(text);
-    console.log($("#date").find(".year span.value").html())
-});
-$("#month li a").click(function(){
-    var text = $(this).html();
-    $(".month span").html(text);
-    console.log($("#date").find(".month span.value").html())
-});
-
-$("#searchdata").click(function(){
-    reflashdata()
-});
-
 
