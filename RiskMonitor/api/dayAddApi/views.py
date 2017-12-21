@@ -6,28 +6,28 @@ from django.contrib.auth.decorators import permission_required
 
 
 # #index
-from models import IndexHead,IndexDash,IndexHopper,IndexCity,IndexAcrepay
-from serializers import IndexHeadSerializer,IndexDashSerializer,IndexHopperSerializer,IndexCitySerializer,IndexAcrepaySerializer
+from models import IndexHead, IndexDash, IndexHopper, IndexCity, IndexAcrepay
+from serializers import IndexHeadSerializer, IndexDashSerializer, IndexHopperSerializer, IndexCitySerializer, IndexAcrepaySerializer
 
 #userInfo
-from models import UserAge,UserAgeAll,UserSex,UserSexAll,UserIncrease,UserRest
-from serializers import UserAgeSerializer,UserAgeAllSerializer,UserSexSerializer,UserSexAllSerializer,UserIncreaseSerializer,UserRestSerializer
+from models import UserAge, UserAgeAll, UserSex, UserSexAll, UserIncrease, UserRest
+from serializers import UserAgeSerializer, UserAgeAllSerializer, UserSexSerializer, UserSexAllSerializer, UserIncreaseSerializer, UserRestSerializer
 
 #flow
-from models import FlowLoanMoney,FlowLoanMoneyNO,FlowLoanMoneySum,FlowDelayRate,FlowDelayRateNO,FlowLoanFund
-from serializers import FlowLoanMoneySerializer,FlowLoanMoneyNOSerializer,FlowLoanMoneySumSerializer,FlowDelayRateSerializer,FlowDelayRateNOSerializer,FlowLoanFundSerializer
+from models import FlowLoanMoney, FlowLoanMoneyNO, FlowLoanMoneySum, FlowDelayRate, FlowDelayRateNO, FlowLoanFund, FlowPaidMoney
+from serializers import FlowLoanMoneySerializer, FlowLoanMoneyNOSerializer, FlowLoanMoneySumSerializer, FlowDelayRateSerializer, FlowDelayRateNOSerializer, FlowLoanFundSerializer,FlowPaidMoneySerializer
 
 #collect
-from models import CollectRate,CollectNum,CollectDis
-from serializers import CollectRateSerializer,CollectNumSerializer,CollectDisSerializer
+from models import CollectRate, CollectNum, CollectDis
+from serializers import CollectRateSerializer, CollectNumSerializer, CollectDisSerializer
 
 #market
 from models import MarketNum
 from serializers import MarketNumSerializer
 
 #aeya
-from models import AeyePassRate,AeyeGetRate,AeyeDelayRate,AeyeDelayRateNO
-from serializers import AeyePassRateSerializer,AeyeGetRateSerializer,AeyeDelayRateSerializer,AeyeDelayRateNOSerializer
+from models import AeyePassRate, AeyeGetRate, AeyeDelayRate, AeyeDelayRateNO
+from serializers import AeyePassRateSerializer, AeyeGetRateSerializer, AeyeDelayRateSerializer, AeyeDelayRateNOSerializer
 
 #model dict
 tableModel = {
@@ -98,6 +98,10 @@ tableModel = {
 	'flowloanfund': {
 			'models': FlowLoanFund,
 			'serializers': FlowLoanFundSerializer,
+	},
+	'flowpaidmoney': {
+			'models': FlowPaidMoney,
+			'serializers': FlowPaidMoneySerializer,
 	},
 	'collectrate': {
 			'models': CollectRate,

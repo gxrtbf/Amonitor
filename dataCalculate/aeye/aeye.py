@@ -337,7 +337,7 @@ def getRate():
 
 def main():
 	passRate()
-	#passRateNO()
+	passRateNO()
 	delayDay()
 	delayDayNO()
 	getRate()

@@ -100,6 +100,41 @@ def loan():
 		status = pysql.insertData(sql,dset)
 	log.log('借贷总金额更新状态-{}！({})！'.format(status,stTime),'info')
 
+#还款金额情况
+def paid():
+	timeList = timeScale()
+	sql = 'select distinct createDate from dayAddApi_flowpaidmoney'
+	tmRest = pysql.dbInfoLocal(sql)
+	tmRest = tmRest.fillna(0)
+
+	tmwait = []
+	if not tmRest.empty:
+		tmwait = [str(x)[:10] for x in tmRest['createDate']]
+
+	for i in range(len(timeList)-1):
+		stTime = timeList[i]
+		edTime = timeList[i+1]
+
+		if stTime in tmwait:
+			continue
+
+		#借贷金额
+		print '借贷金额数据更新：' + stTime + '~' + edTime
+		sql = """
+			select sum(repayMoney)
+			from loan_repaying 
+			where compatibleStatus <> 'CANCEL' and productId != 1001 
+			and createdTime >= '{}' and createdTime < '{}';
+		""".format(stTime,edTime)
+		data = pysql.dbInfo(sql)
+		data = data.fillna(0)
+		money = data.values[0][0]
+
+		sql = """ insert into dayAddApi_flowpaidmoney(paidMoney, createDate) values (%s, %s) """
+		dset = [(money,stTime)]
+		status = pysql.insertData(sql,dset)
+		log.log('每日还款金额更新状态-{}! ({})'.format(status,stTime),'info')
+		
 def loanNO():
 	timeList = timeScale()
 	sql = 'select distinct createDate from dayAddApi_flowloanmoneyno'
@@ -197,6 +232,7 @@ def main():
 	loan()
 	loanNO()
 	actRepayment()
+	paid()
  
 if __name__ == '__main__':
 	main()

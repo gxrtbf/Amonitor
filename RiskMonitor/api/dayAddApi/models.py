@@ -144,6 +144,13 @@ class FlowLoanMoneySum(models.Model):
 
 	unique_together = ('product', 'createDate')
 
+class FlowPaidMoney(models.Model):
+	paidMoney = models.IntegerField(default=0)
+	createDate = models.DateField(primary_key=True,default=timezone.now)
+
+	class Meta:
+		ordering = ('createDate',)
+
 class FlowDelayRate(models.Model):
 	fundName = models.CharField(max_length=128,default='credan')
 	delayRate0 = models.FloatField(default=0.0)

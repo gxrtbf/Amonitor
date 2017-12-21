@@ -1,7 +1,7 @@
 from rest_framework import serializers
 
 # #index
-from models import IndexHead,IndexDash,IndexHopper,IndexCity,IndexAcrepay
+from models import IndexHead, IndexDash, IndexHopper, IndexCity, IndexAcrepay
 
 class IndexHeadSerializer(serializers.ModelSerializer):
     class Meta:
@@ -30,7 +30,7 @@ class IndexAcrepaySerializer(serializers.ModelSerializer):
 
 
 #userInfo
-from models import UserAge,UserAgeAll,UserSex,UserSexAll,UserIncrease,UserRest
+from models import UserAge, UserAgeAll, UserSex, UserSexAll, UserIncrease, UserRest
 
 class UserAgeSerializer(serializers.ModelSerializer):
     class Meta:
@@ -64,7 +64,7 @@ class UserRestSerializer(serializers.ModelSerializer):
 
 
 #flow
-from models import FlowLoanMoney,FlowLoanMoneyNO,FlowLoanMoneySum,FlowDelayRate,FlowDelayRateNO,FlowLoanFund
+from models import FlowLoanMoney, FlowLoanMoneyNO, FlowLoanMoneySum, FlowDelayRate, FlowDelayRateNO, FlowLoanFund, FlowPaidMoney
 
 class FlowLoanMoneySerializer(serializers.ModelSerializer):
     class Meta:
@@ -96,8 +96,13 @@ class FlowLoanFundSerializer(serializers.ModelSerializer):
         model = FlowLoanFund
         fields = ('fundName', 'sumMoney', 'createDate')
 
+class FlowPaidMoneySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = FlowPaidMoney
+        fields = ('paidMoney', 'createDate')
+
 #collect
-from models import CollectRate,CollectNum,CollectDis
+from models import CollectRate, CollectNum, CollectDis
 
 class CollectRateSerializer(serializers.ModelSerializer):
     class Meta:
@@ -124,7 +129,7 @@ class MarketNumSerializer(serializers.ModelSerializer):
 
 #aeye
 
-from models import AeyePassRate,AeyeGetRate,AeyeDelayRate,AeyeDelayRateNO
+from models import AeyePassRate, AeyeGetRate, AeyeDelayRate, AeyeDelayRateNO
 
 class AeyePassRateSerializer(serializers.ModelSerializer):
     class Meta:

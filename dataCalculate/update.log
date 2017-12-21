@@ -51,3 +51,12 @@
 2017-12-07 14:57:00,822 logger.py[line:22] userInfo 留存数据更新状态-6！(2017-10)
 2017-12-07 14:57:09,196 logger.py[line:22] userInfo 留存数据删除状态-6！
 2017-12-07 14:57:09,200 logger.py[line:22] userInfo 留存数据更新状态-6！(2017-11)
+2017-12-09 11:30:14,335 logger.py[line:22] index 漏斗数据更新状态-6
+2017-12-09 11:30:15,654 logger.py[line:22] index 首页标题数据更新状态-6！
+2017-12-09 14:53:33,112 logger.py[line:20] database (1062, "Duplicate entry '2017-12-08' for key 'PRIMARY'")
+2017-12-09 14:53:33,114 logger.py[line:22] index 漏斗数据更新状态-1
+2017-12-09 14:53:37,871 logger.py[line:20] database (1062, "Duplicate entry '2017-12-08' for key 'PRIMARY'")
+2017-12-09 14:53:37,871 logger.py[line:22] index 首页标题数据更新状态-1！
+2017-12-20 16:05:15,568 logger.py[line:20] database maindatabase 1 Mysql Error 1045: Access denied for user 'credan_readonly'@'180.168.26.45' (using password: YES)
+2017-12-20 16:05:15,598 logger.py[line:20] database maindatabase 2 Mysql Error 1045: Access denied for user 'credan_readonly'@'180.168.26.45' (using password: YES)
+2017-12-20 16:05:15,630 logger.py[line:20] database maindatabase 3 Mysql Error 1045: Access denied for user 'credan_readonly'@'180.168.26.45' (using password: YES)
