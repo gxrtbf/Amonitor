@@ -255,7 +255,7 @@ def c2c():
 			sql = """
 				select count(*) 'num', sum(repayMoney) 'summoney' from loan
 				where status = 6 and productId = 7
-				and createdTime > '{}' and createdTime < '{}'
+				and lastUpdated >= '{}' and lastUpdated < '{}'
 				and loanerId in ({})
 			""".format(stTime,edTime,ids)
 			data = pysql.dbInfo(sql)
@@ -267,9 +267,9 @@ def c2c():
 				select count(*) 'num', sum(ll.repayMoney) 'summoney' from loan l,loan_repaying ll
 				where l.id = ll.loanId 
 				and l.status = 6 and l.productId = 7
-				and ll.termDate > '{}' and ll.termDate < '{}'
+				and ll.termDate = '{}'
 				and l.loanerId in ({})
-			""".format(stTime,edTime,ids)
+			""".format(stTime,ids)
 			data = pysql.dbInfo(sql)
 			data = data.fillna(0)
 			loanCountTerm = data['summoney'].values[0]
@@ -279,10 +279,10 @@ def c2c():
 				select ll.loanId, ll.repayMoney, ll.repaidTime, ll.termDate from loan l,loan_repaying ll
 				where l.id = ll.loanId 
 				and l.status = 6 and l.productId = 7
-				and ll.termDate > '{}' and ll.termDate < '{}'
+				and ll.termDate = '{}'
 				and l.loanerId in ({})) lt
 				where DATE_FORMAT(lt.repaidTime,'%Y-%m-%d') >= DATE_FORMAT(lt.termDate,'%Y-%m-%d')
-			""".format(stTime,edTime,ids)
+			""".format(stTime,ids)
 			data = pysql.dbInfo(sql)
 			data = data.fillna(0)
 			loanCountTermNo = data['summoney'].values[0]
@@ -292,9 +292,9 @@ def c2c():
 			sql = """
 				select count(*) 'num', sum(l.repayMoney) 'summoney' from loan l,loan_repaying ll
 				where l.id = ll.loanId
-				and l.status = 6 and l.productId = 7 and ll.termDate < now()
+				and l.status = 6 and l.productId = 7 and ll.termDate < {}
 				and l.loanerId in ({})
-			""".format(ids)
+			""".format(edTime, ids)
 			data = pysql.dbInfo(sql)
 			data = data.fillna(0)
 			allCountTerm = data['summoney'].values[0]
@@ -316,7 +316,7 @@ def c2c():
 			dset = [(name, loancount, loanmoney, loanCountTerm, loanCountTermNo, delayRate0, allCountTerm, delayRate7, countTerm7,stTime)]
 			status = pysql.insertData(sql,dset)
 
-			log.log('每日应还实还更新状态-{}！({})！'.format(status,stTime),'info')
+			log.log('c2c更新状态-{}！({})！'.format(status,stTime),'info')
 
 def main():
 	loan()
