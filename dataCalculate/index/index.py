@@ -116,8 +116,8 @@ def userPlace():
 	tp['市'] = tp.index.map(lambda x :x[1])
 	tp = tp.sort_values(by="人数",ascending=False)
 	tp = tp.reset_index(drop=True)
-	tp.to_csv('C:\Users\Amon\Desktop\ct.csv',index=False,encoding='utf_8_sig')
-	exit(0)
+	# tp.to_csv('C:\Users\Amon\Desktop\ct.csv',index=False,encoding='utf_8_sig')
+	# exit(0)
 
 	#生成city
 	# gg = {}
@@ -135,8 +135,9 @@ def userPlace():
 	for i in range(50,-1,-1):
 		item = tp.ix[i]
 		key = item['省'].decode('utf-8') + item['市'].decode('utf-8')
-		cityName.append(city[key])
-		cityNum.append(item['人数'])
+		if city.get(key,None) is not None:
+			cityName.append(city.get(key))
+			cityNum.append(item['人数'])
 	ctime = [str(datetime.datetime.now()-datetime.timedelta(days=1))[:10]]*len(cityName)
 
 	sql = """ insert into dayAddApi_indexcity(cityName,numInCity,createDate) values (%s,%s,%s) """

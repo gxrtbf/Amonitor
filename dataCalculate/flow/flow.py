@@ -281,7 +281,7 @@ def c2c():
 				and l.status = 6 and l.productId = 7
 				and ll.termDate = '{}'
 				and l.loanerId in ({})) lt
-				where DATE_FORMAT(lt.repaidTime,'%Y-%m-%d') >= DATE_FORMAT(lt.termDate,'%Y-%m-%d')
+				where DATE_FORMAT(lt.repaidTime,'%Y-%m-%d') > DATE_FORMAT(lt.termDate,'%Y-%m-%d') or lt.repaidTime is null
 			""".format(stTime,ids)
 			data = pysql.dbInfo(sql)
 			data = data.fillna(0)
@@ -292,7 +292,7 @@ def c2c():
 			sql = """
 				select count(*) 'num', sum(l.repayMoney) 'summoney' from loan l,loan_repaying ll
 				where l.id = ll.loanId
-				and l.status = 6 and l.productId = 7 and ll.termDate < {}
+				and l.status = 6 and l.productId = 7 and ll.termDate < '{}'
 				and l.loanerId in ({})
 			""".format(edTime, ids)
 			data = pysql.dbInfo(sql)

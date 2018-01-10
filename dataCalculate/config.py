@@ -221,7 +221,7 @@ c2c_member = {
 	u'ailsa':["'1036'"],
 	u'yulanda':["'1037'"],
 	u'haoshiduo':["'1040'"],
-	u'zhonglishi':["'1041'"]
+	u'zhonglishi':["'1041'"],
 	u'vicky':["'1044'"]
 }
 
