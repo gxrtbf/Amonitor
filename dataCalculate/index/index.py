@@ -81,7 +81,7 @@ def userPlace():
 		select aes_decrypt(a.id_num,'1zhida**') 'id_num' from _user a,batch_acc_mgnt_account_info b where a.id=b.user_id;
 	"""
 	# sql = """
-	# 	select aes_decrypt(a.id_num,'1zhida**') 'id_num' from _user a,batch_acc_mgnt_account_info b where a.id=b.user_id and b.membership in (4,5);
+	# 	select aes_decrypt(a.id_num,'1zhida**') 'id_num' from _user a,batch_acc_mgnt_account_info b where a.id=b.user_id and b.membership in (3,4,5);
 	# """
 	# sql = """
 	# 	select distinct aes_decrypt(a.id_num,'1zhida**') 'id_num' 
@@ -116,8 +116,8 @@ def userPlace():
 	tp['市'] = tp.index.map(lambda x :x[1])
 	tp = tp.sort_values(by="人数",ascending=False)
 	tp = tp.reset_index(drop=True)
-	# tp.to_csv('C:\Users\Amon\Desktop\ct.csv',index=False,encoding='utf_8_sig')
-	# exit(0)
+	tp.to_csv('C:\Users\Amon\Desktop\ct.csv',index=False,encoding='utf_8_sig')
+	exit(0)
 
 	#生成city
 	# gg = {}
@@ -206,9 +206,9 @@ def dashbook():
 	log.log('仪表盘数据更新状态-{}！'.format(status),'info')
 
 def main():
-	hopperHead()
+	#hopperHead()
 	userPlace()
-	dashbook()
+	#dashbook()
  
 if __name__ == '__main__':
 	main()

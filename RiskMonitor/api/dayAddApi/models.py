@@ -193,6 +193,23 @@ class FlowLoanFund(models.Model):
 
 	unique_together = ('fundName', 'createDate')
 
+class FlowC2CFund(models.Model):
+	member = models.CharField(max_length=128,default='credan')
+	loanCount = models.IntegerField(default=0)
+	loanMoney = models.FloatField(default=0.0)
+	loanCountTerm = models.IntegerField(default=0)
+	loanCountTermNo = models.IntegerField(default=0)
+	delayRate0 = models.FloatField(default=0.0)
+	allCountTerm = models.IntegerField(default=0)
+	delayRate7 = models.FloatField(default=0.0)
+	CountTerm7 =   models.IntegerField(default=0)
+	createDate = models.DateField(default=timezone.now)
+
+	class Meta:
+		ordering = ('createDate',)
+
+	unique_together = ('member', 'createDate')
+
 #collect
 
 class CollectRate(models.Model):

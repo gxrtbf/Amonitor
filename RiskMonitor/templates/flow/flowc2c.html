@@ -1,0 +1,44 @@
+{% extends "base_frame.html" %}
+{% block page_content %}
+    <div id="page-wrapper">
+            <div class="row">
+                <div class="col-lg-12">
+                    <h1 class="page-header">业务-C2C</h1>
+                </div>
+                <!-- /.col-lg-12 -->
+            </div>
+            <!-- /.row -->
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <i class="fa fa-bar-chart-o fa-fw"></i> c2c贷款昨日贷款情况
+                        </div>
+                        <div class="panel-body">
+                            <table id="tdata" class="display">
+                                <thead>
+                                    <tr>
+                                        <th> 出贷人</th>
+                                        <th> 昨日贷款笔数</th>
+                                        <th> 昨日贷款金额</th>
+                                        <th> 昨日到期金额</th>
+                                        <th> 昨日到期未还金额</th>
+                                        <th> 首逾率</th>
+                                        <th> 到期总金额</th>
+                                        <th> 逾期率7+</th>
+                                        <th> 逾期金额7+</th>
+                                    </tr>
+                                </thead>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <link href="../static/css/jquery.dataTables.min.css" rel="stylesheet">
+        <script src="../static/js/echarts.min.js"></script>
+        <script src="../static/js/jquery-3.2.1.min.js"></script>
+        <script src="../static/js/jquery.dataTables.min.js"></script>
+        <script src="../static/js/flowc2c.js"></script>
+{% endblock %}

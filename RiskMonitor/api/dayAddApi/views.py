@@ -14,8 +14,8 @@ from models import UserAge, UserAgeAll, UserSex, UserSexAll, UserIncrease, UserR
 from serializers import UserAgeSerializer, UserAgeAllSerializer, UserSexSerializer, UserSexAllSerializer, UserIncreaseSerializer, UserRestSerializer
 
 #flow
-from models import FlowLoanMoney, FlowLoanMoneyNO, FlowLoanMoneySum, FlowDelayRate, FlowDelayRateNO, FlowLoanFund, FlowPaidMoney
-from serializers import FlowLoanMoneySerializer, FlowLoanMoneyNOSerializer, FlowLoanMoneySumSerializer, FlowDelayRateSerializer, FlowDelayRateNOSerializer, FlowLoanFundSerializer,FlowPaidMoneySerializer
+from models import FlowLoanMoney, FlowLoanMoneyNO, FlowLoanMoneySum, FlowDelayRate, FlowDelayRateNO, FlowLoanFund, FlowPaidMoney, FlowC2CFund
+from serializers import FlowLoanMoneySerializer, FlowLoanMoneyNOSerializer, FlowLoanMoneySumSerializer, FlowDelayRateSerializer, FlowDelayRateNOSerializer, FlowLoanFundSerializer, FlowPaidMoneySerializer, FlowC2CFundSerializer
 
 #collect
 from models import CollectRate, CollectNum, CollectDis
@@ -103,6 +103,10 @@ tableModel = {
 			'models': FlowPaidMoney,
 			'serializers': FlowPaidMoneySerializer,
 	},
+	'flowc2c': {
+			'models': FlowC2CFund,
+			'serializers': FlowC2CFundSerializer,
+	},
 	'collectrate': {
 			'models': CollectRate,
 			'serializers': CollectRateSerializer,
@@ -140,7 +144,7 @@ tableModel = {
 import datetime
 from django.db.models import Max
 
-@permission_required('part_admin.dayapi')
+#@permission_required('part_admin.dayapi')
 @api_view(['POST'])
 def indexhead_item(request):
     if request.method == 'POST':
@@ -155,6 +159,7 @@ def indexhead_item(request):
     		objectSerializer = tableModel[tables]['serializers']
 
     		para = paralist.get('para',[])
+    		print para
     		if para:
     			temp = objectModel.objects.all()
     			filterstrtemp = "temp.filter({}{}='{}')"

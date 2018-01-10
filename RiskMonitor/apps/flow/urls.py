@@ -9,4 +9,5 @@ urlpatterns = [
     url(r'^flowIncome/$', views.flowIncome_view ,name='income'),
     url(r'^flowDelayRateFund/$', views.flowDelayRateFund_view ,name='delayRateFund'),
     url(r'^flowLoanFund/$', views.flowLoanFund_view ,name='loanFund'),
+    url(r'^flowC2C/$', views.flowC2C_view ,name='c2c'),
 ]

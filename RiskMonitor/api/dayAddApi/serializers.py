@@ -64,7 +64,7 @@ class UserRestSerializer(serializers.ModelSerializer):
 
 
 #flow
-from models import FlowLoanMoney, FlowLoanMoneyNO, FlowLoanMoneySum, FlowDelayRate, FlowDelayRateNO, FlowLoanFund, FlowPaidMoney
+from models import FlowLoanMoney, FlowLoanMoneyNO, FlowLoanMoneySum, FlowDelayRate, FlowDelayRateNO, FlowLoanFund, FlowPaidMoney, FlowC2CFund
 
 class FlowLoanMoneySerializer(serializers.ModelSerializer):
     class Meta:
@@ -100,6 +100,11 @@ class FlowPaidMoneySerializer(serializers.ModelSerializer):
     class Meta:
         model = FlowPaidMoney
         fields = ('paidMoney', 'createDate')
+
+class FlowC2CFundSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = FlowC2CFund
+        fields = ('member', 'loanCount', 'loanMoney', 'loanCountTerm', 'loanCountTermNo', 'delayRate0', 'allCountTerm', 'delayRate7', 'CountTerm7', 'createDate')
 
 #collect
 from models import CollectRate, CollectNum, CollectDis

@@ -63,7 +63,7 @@ $(document).ready(function(){
                     },
                 }],
                 series: [{
-                    name: '贷款金额',
+                    name: '还款金额',
                     type: 'bar',
                     itemStyle: {
                         normal: {

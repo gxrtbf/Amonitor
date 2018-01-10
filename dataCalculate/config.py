@@ -211,7 +211,19 @@ fundloanId = {
 	u'点点花':["'10020'"],
 }
 
+#c2c_menber
 
+c2c_member = {
+	u'terry':["'1028'"],
+	u'gaffey':["'1029'"],
+	u'yujiahui':["'1030'"],
+	u'emily':["'1033'"],
+	u'ailsa':["'1036'"],
+	u'yulanda':["'1037'"],
+	u'haoshiduo':["'1040'"],
+	u'zhonglishi':["'1041'"]
+	u'vicky':["'1044'"]
+}
 
 
 

@@ -26,3 +26,7 @@ def flowDelayRateFund_view(request):
 @permission_required('part_admin.businessPage')
 def flowLoanFund_view(request):
     return render(request,'flow/flowLoanFund.html')
+
+@permission_required('part_admin.businessPage')
+def flowC2C_view(request):
+    return render(request,'flow/flowc2c.html')
